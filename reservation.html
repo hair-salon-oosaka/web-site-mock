@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>ご予約 — Hair Salon NIWA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;1,300&family=Klee+One&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ════════════════════════════════════════ */
+:root {
+  --kiji:#F2EDE4;--asa:#EDE5D8;--bark:#8C6E4B;--bark-d:#6a5035;
+  --moss:#6B7B5E;--terra:#C4977A;--sumi:#2A2118;--kiji-d:#e8e0d3;
+  --red:#B85450;--green:#5E7B5E;
+  --fs:'Noto Serif JP','Yu Mincho',serif;
+  --fh:'Klee One',cursive;
+  --fr:'Cormorant Garamond',Georgia,serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{background:var(--asa);font-family:var(--fs);font-weight:300;color:var(--sumi);min-height:100vh}
+button{cursor:pointer;font:inherit;border:none;background:none}
+input,textarea,select{font:inherit}
+
+/* ── Header ── */
+.site-header{background:var(--sumi);padding:.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.site-logo{font-family:var(--fr);font-style:italic;font-weight:300;font-size:1.1rem;letter-spacing:.1em;color:var(--kiji)}
+.header-back{font-family:var(--fr);font-style:italic;font-size:.65rem;letter-spacing:.18em;color:var(--kiji);opacity:.45;text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:opacity .2s}
+.header-back:hover{opacity:.75}
+
+/* ── Progress bar ── */
+.progress-bar{background:#fff;padding:.8rem 1rem;border-bottom:1px solid var(--kiji-d);display:flex;align-items:center;justify-content:center;position:sticky;top:48px;z-index:90;box-shadow:0 2px 12px rgba(42,33,24,.06)}
+.p-wrap{display:flex;align-items:center;width:100%;max-width:400px}
+.p-node{display:flex;flex-direction:column;align-items:center;gap:.2rem;flex-shrink:0;cursor:default}
+.p-circle{width:26px;height:26px;border-radius:50%;background:var(--kiji-d);color:rgba(42,33,24,.35);font-size:.7rem;font-weight:600;display:flex;align-items:center;justify-content:center;transition:all .3s var(--ease);font-family:var(--fs)}
+.p-node.done .p-circle{background:var(--bark);color:#fff}
+.p-node.active .p-circle{background:var(--bark);color:#fff;box-shadow:0 0 0 4px rgba(140,110,75,.18)}
+.p-lbl{font-size:.48rem;letter-spacing:.08em;color:rgba(42,33,24,.35);font-family:var(--fs);white-space:nowrap;transition:color .3s}
+.p-node.done .p-lbl,.p-node.active .p-lbl{color:var(--bark)}
+.p-line{flex:1;height:2px;background:var(--kiji-d);margin:0 2px 10px;transition:background .4s var(--ease)}
+.p-line.done{background:var(--bark)}
+
+/* ── Page layout ── */
+.page{display:none;flex-direction:column;max-width:480px;margin:0 auto;padding-bottom:6rem}
+.page.active{display:flex}
+
+/* ── Section card ── */
+.card{background:var(--kiji);margin:.5rem .5rem 0;border-radius:12px;overflow:hidden}
+.card-head{padding:.75rem 1rem .3rem;font-family:var(--fs);font-size:.82rem;font-weight:400;color:var(--sumi);letter-spacing:.05em}
+.card-head-sub{font-family:var(--fr);font-style:italic;font-size:.6rem;letter-spacing:.18em;color:var(--bark);opacity:.5;text-transform:uppercase;display:block;margin-bottom:.1rem}
+
+/* ── Calendar ── */
+.cal-head{display:flex;align-items:center;justify-content:space-between;padding:.5rem 1rem .4rem}
+.cal-month{font-family:var(--fs);font-size:.95rem;font-weight:400;color:var(--sumi);letter-spacing:.04em}
+.cal-nav{min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--kiji-d);border-radius:8px;color:var(--bark);font-size:.9rem;transition:background .2s}
+.cal-nav:hover{background:var(--asa)}
+.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);padding:0 .5rem;margin-bottom:.2rem}
+.cal-dow span{text-align:center;font-family:var(--fs);font-size:.62rem;color:rgba(42,33,24,.4);padding:.3rem 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:0 .5rem .7rem}
+.day{min-height:44px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--fs);font-size:.82rem;color:var(--sumi);cursor:pointer;transition:background .2s,color .2s;position:relative;gap:2px;border:1.5px solid transparent;-webkit-tap-highlight-color:transparent}
+.day:hover:not(.off):not(.full):not(.prev){background:var(--asa)}
+.day.prev{color:rgba(42,33,24,.18);cursor:default;pointer-events:none}
+.day.off{cursor:not-allowed;position:relative;overflow:hidden;color:rgba(42,33,24,.28)}
+.day.off::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-45deg,transparent,transparent 5px,rgba(42,33,24,.06) 5px,rgba(42,33,24,.06) 6px)}
+.day.full{color:rgba(42,33,24,.35);cursor:not-allowed}
+.day.full-mark{font-size:.5rem;color:var(--red);line-height:1}
+.day.sel{background:var(--bark)!important;color:var(--kiji)!important;border-color:var(--bark)}
+.day.today{border-color:rgba(140,110,75,.4);color:var(--bark);font-weight:600}
+.day.today.off,.day.today.prev{border-color:transparent}
+.cal-legend{display:flex;gap:.8rem;padding:.1rem 1rem .7rem;flex-wrap:wrap}
+.leg-item{display:flex;align-items:center;gap:.3rem;font-family:var(--fs);font-size:.62rem;color:rgba(42,33,24,.5)}
+.leg-swatch{width:14px;height:14px;border-radius:3px}
+
+/* ── Time slots ── */
+.slots-info{padding:.2rem 1rem .4rem;font-family:var(--fs);font-size:.78rem;color:var(--sumi);opacity:.6;letter-spacing:.04em}
+.slots-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;padding:.2rem 1rem .8rem}
+.slot{min-height:52px;border:1.5px solid var(--kiji-d);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;transition:all .22s;-webkit-tap-highlight-color:transparent}
+.slot:hover:not(.slot-off){border-color:var(--bark-l);background:rgba(140,110,75,.05)}
+.slot.slot-off{opacity:.28;cursor:not-allowed;background:var(--asa)}
+.slot.slot-sel{background:var(--bark);border-color:var(--bark);color:var(--kiji)}
+.slot-t{font-family:var(--fr);font-size:.9rem;letter-spacing:.06em;color:var(--bark)}
+.slot.slot-off .slot-t{color:inherit}
+.slot.slot-sel .slot-t{color:var(--kiji)}
+.slot-s{font-size:.55rem;font-family:var(--fs);color:var(--moss)}
+.slot.slot-sel .slot-s{color:rgba(242,237,228,.65)}
+.slot.slot-off .slot-s{color:var(--red)}
+
+/* ── Menu ── */
+.menu-cat{background:var(--asa);padding:.5rem 1rem;font-family:var(--fs);font-size:.68rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--sumi);opacity:.65}
+.menu-item{display:flex;align-items:center;gap:.8rem;padding:.9rem 1rem;border-bottom:1px solid var(--kiji-d);cursor:pointer;transition:background .18s;-webkit-tap-highlight-color:transparent}
+.menu-item:last-of-type{border-bottom:none}
+.menu-item:hover{background:rgba(140,110,75,.04)}
+.menu-item.m-sel{background:rgba(140,110,75,.06)}
+.m-cb{width:24px;height:24px;border:2px solid var(--kiji-d);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;font-size:.75rem}
+.menu-item.m-sel .m-cb{background:var(--bark);border-color:var(--bark);color:#fff}
+.m-info{flex:1}
+.m-name{font-family:var(--fs);font-size:.85rem;color:var(--sumi);margin-bottom:.1rem}
+.m-meta{font-family:var(--fs);font-size:.68rem;color:rgba(42,33,24,.4);display:flex;gap:.5rem}
+.m-price{font-family:var(--fs);font-size:.85rem;color:var(--bark);white-space:nowrap;font-weight:400}
+.total-bar{background:var(--bark);padding:.7rem 1rem;display:flex;justify-content:space-between;align-items:center;border-radius:0 0 12px 12px}
+.total-lbl{font-family:var(--fs);font-size:.72rem;color:var(--kiji);opacity:.75;letter-spacing:.06em}
+.total-val{font-family:var(--fh);font-size:.98rem;color:var(--kiji);letter-spacing:.04em}
+.menu-warn{background:rgba(196,151,122,.15);border-left:3px solid var(--terra);padding:.5rem .8rem;margin:.3rem 1rem;border-radius:0 6px 6px 0;font-family:var(--fs);font-size:.72rem;color:var(--terra);line-height:1.6;display:none}
+.menu-warn.show{display:block}
+
+/* ── Form fields ── */
+.field{padding:.6rem 1rem}
+.field-label{font-family:var(--fs);font-size:.7rem;color:rgba(42,33,24,.55);display:flex;align-items:center;gap:.4rem;margin-bottom:.4rem;letter-spacing:.06em}
+.req-badge{background:var(--bark);color:#fff;font-size:.52rem;padding:.1rem .3rem;border-radius:3px;letter-spacing:.06em}
+.f-input{width:100%;min-height:48px;padding:.7rem .9rem;border:1.5px solid var(--kiji-d);border-radius:10px;font-family:var(--fs);font-size:.9rem;color:var(--sumi);outline:none;background:var(--kiji);transition:border-color .2s;-webkit-appearance:none}
+.f-input:focus{border-color:var(--bark)}
+.f-input.err{border-color:var(--red);background:rgba(184,84,80,.03)}
+.f-input.ok{border-color:var(--green)}
+.f-textarea{width:100%;min-height:90px;padding:.75rem .9rem;border:1.5px solid var(--kiji-d);border-radius:10px;font-family:var(--fs);font-size:.85rem;color:var(--sumi);outline:none;resize:vertical;background:var(--kiji)}
+.f-textarea:focus{border-color:var(--bark);outline:none}
+.field-msg{font-family:var(--fs);font-size:.7rem;margin-top:.3rem;display:flex;align-items:center;gap:.35rem}
+.field-msg.err-msg{color:var(--red)}
+.field-msg.ok-msg{color:var(--green)}
+.agree-row{display:flex;align-items:center;gap:.8rem;padding:.5rem 1rem .8rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.agree-box{width:24px;height:24px;border:2px solid var(--bark);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:var(--kiji)}
+.agree-box.checked{background:var(--bark);color:#fff}
+.agree-txt{font-family:var(--fs);font-size:.78rem;color:rgba(42,33,24,.6);line-height:1.65}
+.agree-txt a{color:var(--bark);text-decoration:underline;text-underline-offset:2px}
+
+/* ── Summary ── */
+.sum-card{background:var(--kiji);border-radius:12px;overflow:hidden;margin:.5rem .5rem 0}
+.sum-section{padding:.7rem 1rem}
+.sum-section+.sum-section{border-top:1px solid var(--kiji-d)}
+.sum-title{font-family:var(--fr);font-style:italic;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bark);opacity:.5;margin-bottom:.6rem}
+.sum-row{display:grid;grid-template-columns:72px 1fr;gap:.3rem;padding:.3rem 0;border-bottom:1px solid rgba(140,110,75,.1)}
+.sum-row:last-child{border:none}
+.sum-k{font-family:var(--fs);font-size:.7rem;color:rgba(42,33,24,.45)}
+.sum-v{font-family:var(--fs);font-size:.8rem;color:var(--sumi);line-height:1.7}
+.sum-edit{font-family:var(--fs);font-size:.72rem;color:var(--bark);opacity:.55;background:none;padding:.3rem 0;display:block;text-align:right;width:100%;letter-spacing:.08em;transition:opacity .2s}
+.sum-edit:hover{opacity:.85}
+
+/* ── Nav buttons ── */
+.nav-bar{position:fixed;bottom:0;left:0;right:0;background:var(--kiji);border-top:1px solid var(--kiji-d);padding:.8rem;display:flex;gap:.6rem;z-index:80;max-width:480px;margin:0 auto}
+.btn-back{flex:1;min-height:48px;border:1.5px solid var(--kiji-d);border-radius:10px;font-family:var(--fs);font-size:.8rem;color:rgba(42,33,24,.55);transition:all .2s}
+.btn-back:hover{border-color:var(--bark-l);color:var(--bark)}
+.btn-next{flex:2;min-height:48px;background:var(--bark);color:var(--kiji);border-radius:10px;font-family:var(--fs);font-size:.85rem;letter-spacing:.1em;transition:background .25s,opacity .25s;box-shadow:0 4px 16px rgba(140,110,75,.25)}
+.btn-next:hover:not(:disabled){background:var(--bark-d)}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.btn-confirm{width:100%;min-height:52px;background:var(--bark);color:var(--kiji);border-radius:10px;font-family:var(--fh);font-size:1rem;letter-spacing:.12em;box-shadow:0 4px 20px rgba(140,110,75,.3);transition:background .25s}
+.btn-confirm:hover{background:var(--bark-d)}
+
+/* ── Cancel policy ── */
+.cancel-note{font-family:var(--fs);font-size:.68rem;color:rgba(42,33,24,.38);text-align:center;padding:.6rem 1rem;line-height:1.8}
+
+/* ── Success screen ── */
+.success-screen{display:none;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;text-align:center;min-height:60vh;max-width:480px;margin:0 auto}
+.success-screen.show{display:flex}
+.success-icon{width:64px;height:64px;border-radius:50%;background:var(--bark);display:flex;align-items:center;justify-content:center;color:var(--kiji);font-size:1.5rem;margin-bottom:1.5rem;box-shadow:0 8px 32px rgba(140,110,75,.3)}
+.success-title{font-family:var(--fh);font-size:1.4rem;color:var(--sumi);letter-spacing:.06em;margin-bottom:.6rem}
+.success-sub{font-family:var(--fs);font-size:.82rem;color:rgba(42,33,24,.6);line-height:1.9;letter-spacing:.05em}
+.success-detail{background:var(--kiji);border-radius:12px;padding:1.2rem;margin:1.5rem 0;text-align:left;width:100%}
+.success-detail p{font-family:var(--fs);font-size:.8rem;color:var(--sumi);line-height:1.9;letter-spacing:.05em;opacity:.75}
+.success-home{min-height:48px;padding:0 2rem;background:var(--bark);color:var(--kiji);border-radius:10px;font-family:var(--fs);font-size:.85rem;letter-spacing:.1em;margin-top:.5rem;box-shadow:0 4px 16px rgba(140,110,75,.22)}
+
+/* ── Grain ── */
+.grain{position:fixed;inset:0;pointer-events:none;z-index:200;opacity:.03;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px}
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- Header -->
+<header class="site-header">
+  <a href="NIWA.html" class="header-back">← サイトに戻る</a>
+  <div class="site-logo">Hair Salon NIWA</div>
+  <div style="width:80px"></div>
+</header>
+
+<!-- Progress -->
+<div class="progress-bar">
+  <div class="p-wrap">
+    <div class="p-node active" id="pn-1"><div class="p-circle">1</div><div class="p-lbl">日付</div></div>
+    <div class="p-line" id="pl-1"></div>
+    <div class="p-node" id="pn-2"><div class="p-circle">2</div><div class="p-lbl">時間帯</div></div>
+    <div class="p-line" id="pl-2"></div>
+    <div class="p-node" id="pn-3"><div class="p-circle">3</div><div class="p-lbl">メニュー</div></div>
+    <div class="p-line" id="pl-3"></div>
+    <div class="p-node" id="pn-4"><div class="p-circle">4</div><div class="p-lbl">お客様情報</div></div>
+    <div class="p-line" id="pl-4"></div>
+    <div class="p-node" id="pn-5"><div class="p-circle">5</div><div class="p-lbl">確認</div></div>
+  </div>
+</div>
+
+<!-- ══ STEP 1: Date ══ -->
+<div class="page active" id="page-1">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-sub">Step 1</span>
+      ご希望の日付を選択してください
+    </div>
+    <div class="cal-head">
+      <button class="cal-nav" id="cal-prev">‹</button>
+      <div class="cal-month" id="cal-month-label"></div>
+      <button class="cal-nav" id="cal-next">›</button>
+    </div>
+    <div class="cal-dow">
+      <span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span>
+    </div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <div class="leg-item"><div class="leg-swatch" style="background:var(--bark);border-radius:50%"></div>選択中</div>
+      <div class="leg-item"><div class="leg-swatch" style="background:repeating-linear-gradient(-45deg,#ddd,#ddd 2px,#ede5d8 2px,#ede5d8 4px)"></div>定休日</div>
+      <div class="leg-item" style="color:var(--red);">× 満員</div>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <div style="flex:1"></div>
+    <button class="btn-next" id="next-1" disabled>次へ →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 2: Time ══ -->
+<div class="page" id="page-2">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-sub">Step 2</span>
+      <span id="slots-date-label">時間帯を選択してください</span>
+    </div>
+    <p class="slots-info">ご希望の時間帯をお選びください</p>
+    <div class="slots-grid" id="slots-grid"></div>
+  </div>
+  <div class="nav-bar">
+    <button class="btn-back" onclick="goTo(1)">← 戻る</button>
+    <button class="btn-next" id="next-2" disabled>次へ →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 3: Menu ══ -->
+<div class="page" id="page-3">
+  <div class="card" id="menu-card">
+    <div class="card-head">
+      <span class="card-head-sub">Step 3</span>
+      メニューを選択（複数可）
+    </div>
+    <!-- カット -->
+    <div class="menu-cat">カット</div>
+    <div class="menu-item" data-id="cut1" data-price="5500" data-min="60" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">カット</div><div class="m-meta"><span>約60分</span></div></div><div class="m-price">¥5,500</div>
+    </div>
+    <div class="menu-item" data-id="cut2" data-price="1650" data-min="15" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">前髪カット</div><div class="m-meta"><span>約15分</span></div></div><div class="m-price">¥1,650</div>
+    </div>
+    <!-- カラー -->
+    <div class="menu-cat">カラー</div>
+    <div class="menu-item" data-id="col1" data-price="8800" data-min="120" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">全体カラー</div><div class="m-meta"><span>約120分</span></div></div><div class="m-price">¥8,800</div>
+    </div>
+    <div class="menu-item" data-id="col2" data-price="7150" data-min="90" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">リタッチカラー</div><div class="m-meta"><span>約90分</span></div></div><div class="m-price">¥7,150</div>
+    </div>
+    <!-- パーマ -->
+    <div class="menu-cat">パーマ</div>
+    <div class="menu-item" data-id="prm1" data-price="9900" data-min="150" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">パーマ</div><div class="m-meta"><span>約150分</span></div></div><div class="m-price">¥9,900</div>
+    </div>
+    <!-- トリートメント -->
+    <div class="menu-cat">トリートメント</div>
+    <div class="menu-item" data-id="trt1" data-price="3300" data-min="30" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">システムトリートメント</div><div class="m-meta"><span>約30分</span></div></div><div class="m-price">¥3,300</div>
+    </div>
+    <div class="menu-item" data-id="spa1" data-price="4400" data-min="40" onclick="toggleMenu(this)">
+      <div class="m-cb"></div><div class="m-info"><div class="m-name">ヘッドスパ</div><div class="m-meta"><span>約40分</span></div></div><div class="m-price">¥4,400</div>
+    </div>
+    <div class="menu-warn" id="menu-warn">⚠ 選択メニューの合計所要時間が時間枠を超える可能性があります。</div>
+    <div class="total-bar">
+      <span class="total-lbl">合計</span>
+      <span class="total-val" id="menu-total">メニューを選択してください</span>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <button class="btn-back" onclick="goTo(2)">← 戻る</button>
+    <button class="btn-next" id="next-3" disabled>次へ →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 4: Info ══ -->
+<div class="page" id="page-4">
+  <div class="card">
+    <div class="card-head">
+      <span class="card-head-sub">Step 4</span>
+      お客様情報の入力
+    </div>
+    <div class="field">
+      <div class="field-label">お名前 <span class="req-badge">必須</span></div>
+      <input class="f-input" type="text" id="f-name" placeholder="山田 花子" autocomplete="name" oninput="validateForm()">
+      <div class="field-msg err-msg" id="msg-name" style="display:none">お名前を入力してください</div>
+    </div>
+    <div class="field">
+      <div class="field-label">電話番号 <span class="req-badge">必須</span></div>
+      <input class="f-input" type="tel" id="f-tel" placeholder="090-1234-5678" autocomplete="tel" oninput="validateForm()">
+      <div class="field-msg err-msg" id="msg-tel" style="display:none">正しい電話番号を入力してください</div>
+    </div>
+    <div class="field">
+      <div class="field-label">メールアドレス <span class="req-badge">必須</span></div>
+      <input class="f-input" type="email" id="f-email" placeholder="example@email.com" autocomplete="email" oninput="validateForm()">
+      <div class="field-msg err-msg" id="msg-email" style="display:none">正しいメールアドレスを入力してください</div>
+    </div>
+    <div class="field">
+      <div class="field-label">備考（任意）</div>
+      <textarea class="f-textarea" id="f-note" placeholder="ご要望・アレルギー等があればご記入ください"></textarea>
+    </div>
+    <div class="agree-row" onclick="toggleAgree()">
+      <div class="agree-box" id="agree-box"></div>
+      <span class="agree-txt"><a href="#" onclick="return false">プライバシーポリシー</a>に同意する</span>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <button class="btn-back" onclick="goTo(3)">← 戻る</button>
+    <button class="btn-next" id="next-4" disabled>次へ →</button>
+  </div>
+</div>
+
+<!-- ══ STEP 5: Confirm ══ -->
+<div class="page" id="page-5">
+  <div class="sum-card">
+    <div class="sum-section">
+      <div class="sum-title">予約日時</div>
+      <div class="sum-row"><span class="sum-k">日付</span><span class="sum-v" id="sum-date">—</span></div>
+      <div class="sum-row"><span class="sum-k">時間</span><span class="sum-v" id="sum-time">—</span></div>
+      <button class="sum-edit" onclick="goTo(1)">修正する →</button>
+    </div>
+    <div class="sum-section">
+      <div class="sum-title">ご予約メニュー</div>
+      <div class="sum-row"><span class="sum-k">施術</span><span class="sum-v" id="sum-menu">—</span></div>
+      <div class="sum-row"><span class="sum-k">所要時間</span><span class="sum-v" id="sum-dur">—</span></div>
+      <div class="sum-row"><span class="sum-k">料金</span><span class="sum-v" id="sum-price">—</span></div>
+      <button class="sum-edit" onclick="goTo(3)">修正する →</button>
+    </div>
+    <div class="sum-section">
+      <div class="sum-title">お客様情報</div>
+      <div class="sum-row"><span class="sum-k">お名前</span><span class="sum-v" id="sum-name">—</span></div>
+      <div class="sum-row"><span class="sum-k">電話</span><span class="sum-v" id="sum-tel">—</span></div>
+      <div class="sum-row"><span class="sum-k">メール</span><span class="sum-v" id="sum-email">—</span></div>
+      <div class="sum-row" id="sum-note-row" style="display:none"><span class="sum-k">備考</span><span class="sum-v" id="sum-note">—</span></div>
+      <button class="sum-edit" onclick="goTo(4)">修正する →</button>
+    </div>
+  </div>
+  <div class="cancel-note">ご予約後の変更・キャンセルは来店24時間前までにご連絡ください。<br>03-1234-5678</div>
+  <div style="padding:.3rem .5rem 0;max-width:480px;margin:0 auto;">
+    <button class="btn-confirm" onclick="confirmReservation()">予約を確定する</button>
+  </div>
+  <div style="height:1rem"></div>
+  <div class="nav-bar">
+    <button class="btn-back" onclick="goTo(4)">← 戻る</button>
+    <div style="flex:2"></div>
+  </div>
+</div>
+
+<!-- Success Screen -->
+<div class="success-screen" id="success-screen">
+  <div class="success-icon">✓</div>
+  <div class="success-title">ご予約が完了しました</div>
+  <p class="success-sub">確認メールをお送りしました。<br>当日は10分前にお越しください。</p>
+  <div class="success-detail">
+    <p id="success-detail-text"></p>
+  </div>
+  <a href="NIWA.html" class="success-home" style="display:inline-flex;align-items:center;justify-content:center;">サイトに戻る</a>
+</div>
+
+<script>
+// ═══ STATE ═══════════════════════════════════════════
+const state = {
+  year: null, month: null,
+  selectedDate: null,
+  selectedTime: null,
+  selectedMenus: [],
+  agreed: false,
+  currentStep: 1,
+};
+
+// ─── Calendar ────────────────────────────────────────
+const CLOSED_DAYS = [0]; // Sunday (月曜は1, 火曜は2...)
+// Closed: Mon(1) and 2nd-Tue(2nd occurrence of 2)
+const FULL_DATES = ['2026-05-15','2026-05-16','2026-05-23']; // pre-marked full dates
+
+function isClosedDay(y, m, d) {
+  const dt = new Date(y, m, d);
+  const dow = dt.getDay();
+  if (dow === 1) return true; // Monday always closed
+  if (dow === 2) {
+    // 2nd Tuesday
+    let count = 0;
+    for (let i = 1; i <= d; i++) {
+      if (new Date(y, m, i).getDay() === 2) count++;
+    }
+    if (count === 2) return true;
+  }
+  return false;
+}
+
+function renderCalendar() {
+  const now = new Date();
+  if (!state.year) { state.year = now.getFullYear(); state.month = now.getMonth(); }
+  const y = state.year, m = state.month;
+  const label = `${y}年 ${m+1}月`;
+  document.getElementById('cal-month-label').textContent = label;
+
+  const firstDow = new Date(y, m, 1).getDay();
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + 60);
+
+  let html = '';
+  // Empty cells before first
+  for (let i = 0; i < firstDow; i++) html += '<div class="day prev"></div>';
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(y, m, d);
+    const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    let cls = 'day';
+    if (dt < today || dt > maxDate) cls += ' prev';
+    else if (isClosedDay(y, m, d)) cls += ' off';
+    else if (FULL_DATES.includes(dateStr)) cls += ' full';
+    if (dt.getTime() === today.getTime()) cls += ' today';
+    if (state.selectedDate === dateStr && !cls.includes('prev') && !cls.includes('off') && !cls.includes('full')) cls += ' sel';
+    const canClick = !cls.includes('prev') && !cls.includes('off') && !cls.includes('full');
+    const fullMark = cls.includes('full') ? '<div class="full-mark">×</div>' : '';
+    html += `<div class="${cls}" ${canClick ? `onclick="selectDate('${dateStr}',${d})"` : ''}>${d}${fullMark}</div>`;
+  }
+  document.getElementById('cal-grid').innerHTML = html;
+  document.getElementById('cal-prev').disabled = (y === now.getFullYear() && m === now.getMonth());
+}
+
+function selectDate(dateStr, d) {
+  state.selectedDate = dateStr;
+  state.selectedTime = null;
+  renderCalendar();
+  document.getElementById('next-1').disabled = false;
+}
+
+document.getElementById('cal-prev').addEventListener('click', () => {
+  const now = new Date();
+  if (state.year === now.getFullYear() && state.month === now.getMonth()) return;
+  state.month--; if (state.month < 0) { state.month = 11; state.year--; }
+  renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click', () => {
+  state.month++; if (state.month > 11) { state.month = 0; state.year++; }
+  renderCalendar();
+});
+document.getElementById('next-1').addEventListener('click', () => goTo(2));
+
+// ─── Slots ───────────────────────────────────────────
+const ALL_SLOTS = ['10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
+const FULL_SLOTS = ['10:00','10:30','15:00','15:30'];
+
+function renderSlots() {
+  const [y, m, d] = state.selectedDate.split('-');
+  const weekdays = ['日','月','火','水','木','金','土'];
+  const dt = new Date(+y, +m-1, +d);
+  document.getElementById('slots-date-label').textContent = `${y}年${m}月${d}日（${weekdays[dt.getDay()]}）の時間帯`;
+  let html = '';
+  ALL_SLOTS.forEach(t => {
+    const isOff = FULL_SLOTS.includes(t);
+    const isSel = state.selectedTime === t;
+    let cls = 'slot';
+    if (isOff) cls += ' slot-off';
+    if (isSel) cls += ' slot-sel';
+    const mark = isOff ? '×' : '◯';
+    html += `<div class="${cls}" ${!isOff ? `onclick="selectTime('${t}')"` : ''}>
+      <div class="slot-t">${t}</div>
+      <div class="slot-s">${mark}</div>
+    </div>`;
+  });
+  document.getElementById('slots-grid').innerHTML = html;
+}
+
+function selectTime(t) {
+  state.selectedTime = t;
+  renderSlots();
+  document.getElementById('next-2').disabled = false;
+}
+document.getElementById('next-2').addEventListener('click', () => goTo(3));
+
+// ─── Menu ────────────────────────────────────────────
+function toggleMenu(el) {
+  const id = el.dataset.id;
+  const idx = state.selectedMenus.findIndex(m => m.id === id);
+  if (idx >= 0) {
+    state.selectedMenus.splice(idx, 1);
+    el.classList.remove('m-sel');
+    el.querySelector('.m-cb').textContent = '';
+  } else {
+    state.selectedMenus.push({ id, price: +el.dataset.price, min: +el.dataset.min, name: el.querySelector('.m-name').textContent });
+    el.classList.add('m-sel');
+    el.querySelector('.m-cb').textContent = '✓';
+  }
+  updateMenuTotal();
+}
+
+function updateMenuTotal() {
+  const total = state.selectedMenus.reduce((s, m) => s + m.price, 0);
+  const mins = state.selectedMenus.reduce((s, m) => s + m.min, 0);
+  const el = document.getElementById('menu-total');
+  if (state.selectedMenus.length === 0) {
+    el.textContent = 'メニューを選択してください';
+    document.getElementById('next-3').disabled = true;
+  } else {
+    el.textContent = `¥${total.toLocaleString()} / ${mins}分`;
+    document.getElementById('next-3').disabled = false;
+  }
+  const warn = document.getElementById('menu-warn');
+  warn.classList.toggle('show', mins > 180);
+}
+document.getElementById('next-3').addEventListener('click', () => goTo(4));
+
+// ─── Form validation ─────────────────────────────────
+let agreed = false;
+
+function toggleAgree() {
+  agreed = !agreed;
+  const box = document.getElementById('agree-box');
+  box.classList.toggle('checked', agreed);
+  box.textContent = agreed ? '✓' : '';
+  validateForm();
+}
+
+function validateForm() {
+  const name = document.getElementById('f-name').value.trim();
+  const tel = document.getElementById('f-tel').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const telOk = /^[\d\-+() ]{10,15}$/.test(tel.replace(/[-\s]/g,'')) && tel.replace(/[-\s]/g,'').length >= 10;
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  setField('f-name', 'msg-name', name.length > 0, name.length === 0 && name !== '', 'お名前を入力してください');
+  setField('f-tel', 'msg-tel', telOk, tel.length > 0 && !telOk, '正しい電話番号を入力してください（ハイフン不要）');
+  setField('f-email', 'msg-email', emailOk, email.length > 0 && !emailOk, '正しいメールアドレスを入力してください');
+  document.getElementById('next-4').disabled = !(name && telOk && emailOk && agreed);
+}
+
+function setField(inputId, msgId, isOk, showErr, errTxt) {
+  const input = document.getElementById(inputId);
+  const msg = document.getElementById(msgId);
+  input.classList.toggle('ok', isOk);
+  input.classList.toggle('err', showErr);
+  msg.style.display = showErr ? 'flex' : 'none';
+  if (showErr) { msg.textContent = errTxt; msg.classList.add('err-msg'); }
+}
+document.getElementById('next-4').addEventListener('click', () => { buildSummary(); goTo(5); });
+
+// ─── Summary ─────────────────────────────────────────
+function buildSummary() {
+  const [y,m,d] = state.selectedDate.split('-');
+  const weekdays = ['日','月','火','水','木','金','土'];
+  const dt = new Date(+y,+m-1,+d);
+  document.getElementById('sum-date').textContent = `${y}年${m}月${d}日（${weekdays[dt.getDay()]}）`;
+  document.getElementById('sum-time').textContent = `${state.selectedTime}〜`;
+  document.getElementById('sum-menu').textContent = state.selectedMenus.map(m => m.name).join(' / ');
+  const mins = state.selectedMenus.reduce((s,m)=>s+m.min,0);
+  const price = state.selectedMenus.reduce((s,m)=>s+m.price,0);
+  document.getElementById('sum-dur').textContent = `約${mins}分`;
+  document.getElementById('sum-price').textContent = `¥${price.toLocaleString()}〜（税込）`;
+  document.getElementById('sum-name').textContent = document.getElementById('f-name').value.trim() + ' 様';
+  document.getElementById('sum-tel').textContent = document.getElementById('f-tel').value.trim();
+  document.getElementById('sum-email').textContent = document.getElementById('f-email').value.trim();
+  const note = document.getElementById('f-note').value.trim();
+  if (note) { document.getElementById('sum-note').textContent = note; document.getElementById('sum-note-row').style.display = 'grid'; }
+}
+
+// ─── Confirm ─────────────────────────────────────────
+function confirmReservation() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelector('.progress-bar').style.display = 'none';
+  const ss = document.getElementById('success-screen');
+  ss.classList.add('show');
+  const [y,m,d] = state.selectedDate.split('-');
+  const price = state.selectedMenus.reduce((s,v)=>s+v.price,0);
+  document.getElementById('success-detail-text').innerHTML =
+    `${y}年${m}月${d}日 ${state.selectedTime}〜<br>` +
+    `${state.selectedMenus.map(v=>v.name).join(' / ')}<br>` +
+    `合計 ¥${price.toLocaleString()}（税込）<br>` +
+    `${document.getElementById('f-name').value.trim()} 様`;
+}
+
+// ─── Navigation ──────────────────────────────────────
+function goTo(step) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-'+step).classList.add('active');
+  state.currentStep = step;
+  updateProgress(step);
+  if (step === 2) renderSlots();
+  window.scrollTo(0, 0);
+}
+
+function updateProgress(step) {
+  for (let i = 1; i <= 5; i++) {
+    const node = document.getElementById('pn-'+i);
+    node.classList.remove('done','active');
+    if (i < step) node.classList.add('done');
+    if (i === step) node.classList.add('active');
+    if (i <= 4) {
+      const line = document.getElementById('pl-'+i);
+      line.classList.toggle('done', i < step);
+    }
+  }
+  // Update circle content for done nodes
+  for (let i = 1; i <= 5; i++) {
+    const circle = document.querySelector(`#pn-${i} .p-circle`);
+    if (i < step) circle.textContent = '✓';
+    else circle.textContent = i;
+  }
+}
+
+// ─── Init ─────────────────────────────────────────────
+renderCalendar();
+</script>
+</body>
+</html>
