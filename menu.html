@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu — noble. | 大阪市城東区野江のプライベート美容室</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Klee+One&family=Noto+Serif+JP:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══ TOKENS ═══════════════════════════════════════ */
+:root {
+  --kiji:   #F2EDE4; --asa: #EDE5D8;
+  --bark:   #8C6E4B; --bark-d: #6a5035; --bark-l: #b89474;
+  --moss:   #6B7B5E; --terra: #C4977A;
+  --sumi:   #2A2118; --kiji-d: #e8e0d3;
+  --fs: 'Noto Serif JP','Yu Mincho',serif;
+  --fh: 'Klee One',cursive;
+  --fr: 'Cormorant Garamond',Georgia,serif;
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+/* ═══ RESET ════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--kiji);color:var(--sumi);font-family:var(--fs);font-weight:300;line-height:1.8;overflow-x:hidden}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
+
+/* ═══ GRAIN ════════════════════════════════════════ */
+.grain{position:absolute;inset:0;pointer-events:none;z-index:10;opacity:.038;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px}
+
+/* ═══ REVEAL ═══════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}
+.reveal-d3{transition-delay:.32s}.reveal-d4{transition-delay:.45s}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.fade-up{animation:fadeUp 1s var(--ease) both}
+.fade-in{animation:fadeIn 1.3s var(--ease) both}
+.d1{animation-delay:.15s}.d2{animation-delay:.3s}.d3{animation-delay:.5s}
+
+/* ═══ EYEBROW ══════════════════════════════════════ */
+.eyebrow{font-family:var(--fr);font-style:italic;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bark);opacity:.75;display:flex;align-items:center;gap:.8rem;margin-bottom:1.2rem}
+.eyebrow::before{content:'';display:block;width:24px;height:1px;background:var(--bark);opacity:.6;flex-shrink:0}
+
+/* ═══ BUTTONS ══════════════════════════════════════ */
+.btn-primary{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2.2rem;background:var(--bark);color:var(--kiji);font-family:var(--fs);font-size:.8rem;font-weight:400;letter-spacing:.14em;border-radius:99px;transition:background .28s var(--ease),transform .28s var(--ease),box-shadow .28s var(--ease);box-shadow:0 4px 18px rgba(140,110,75,.2)}
+.btn-primary:hover{background:var(--bark-d);transform:translateY(-2px);box-shadow:0 8px 24px rgba(140,110,75,.3)}
+.btn-line{display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 2.2rem;background:#06C755;color:#fff;font-family:var(--fs);font-size:.8rem;font-weight:400;letter-spacing:.14em;border-radius:99px;transition:background .28s var(--ease),transform .28s var(--ease),box-shadow .28s var(--ease);box-shadow:0 4px 18px rgba(6,199,85,.22)}
+.btn-line:hover{background:#05b84d;transform:translateY(-2px);box-shadow:0 8px 24px rgba(6,199,85,.32)}
+.btn-outline{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 2rem;background:transparent;color:var(--bark);font-family:var(--fs);font-size:.8rem;font-weight:400;letter-spacing:.14em;border:1px solid var(--bark);border-radius:99px;transition:background .28s var(--ease),color .28s var(--ease),transform .28s var(--ease)}
+.btn-outline:hover{background:var(--bark);color:var(--kiji);transform:translateY(-2px)}
+
+/* ════════════════════════════════════════════════════
+   NAV
+════════════════════════════════════════════════════ */
+#site-nav{position:fixed;top:0;left:0;right:0;z-index:200;transition:background .35s var(--ease),box-shadow .35s var(--ease);background:rgba(242,237,228,.94);backdrop-filter:blur(10px);box-shadow:0 1px 24px rgba(42,33,24,.07)}
+.nav-inner{max-width:1120px;margin:0 auto;padding:1.2rem 2.5rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-family:var(--fr);font-style:italic;font-weight:300;font-size:1.2rem;letter-spacing:.12em;color:var(--sumi)}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{font-family:var(--fr);font-style:italic;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--sumi);opacity:.55;transition:opacity .24s}
+.nav-links a:hover{opacity:1}
+.nav-links .nav-rsv{padding:.4rem 1.3rem;border:1px solid var(--bark);border-radius:99px;color:var(--bark);opacity:.85}
+.nav-ham{display:none;flex-direction:column;gap:5px;padding:.3rem;cursor:pointer}
+.nav-ham span{display:block;width:24px;height:2px;background:var(--sumi);border-radius:2px;transition:transform .32s var(--ease),opacity .24s var(--ease)}
+.nav-ham.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-ham.is-open span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav-ham.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;inset:0;background:var(--kiji);flex-direction:column;justify-content:center;align-items:center;gap:2.5rem;z-index:300}
+  .nav-links.open{display:flex}
+  .nav-links a{font-size:1rem;letter-spacing:.18em;opacity:.7}
+  .nav-ham{display:flex;z-index:400;position:relative}
+}
+
+/* ════════════════════════════════════════════════════
+   PAGE HEADER
+════════════════════════════════════════════════════ */
+.page-header{position:relative;background:var(--sumi);overflow:hidden;padding:10rem 2.5rem 5rem;text-align:center;min-height:38vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.page-header .grain{opacity:.025}
+.ph-ghost{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fr);font-style:italic;font-size:clamp(12rem,32vw,28rem);color:var(--kiji);opacity:.038;line-height:1;pointer-events:none;user-select:none;white-space:nowrap}
+.ph-eyebrow{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--kiji);opacity:.35;margin-bottom:1.2rem}
+.ph-title{font-family:var(--fh);font-size:clamp(2.4rem,5.5vw,4.2rem);color:var(--kiji);letter-spacing:.04em;line-height:1.2;margin-bottom:.8rem}
+.ph-sub{font-family:var(--fr);font-style:italic;font-size:.78rem;letter-spacing:.18em;color:var(--kiji);opacity:.38}
+
+/* ════════════════════════════════════════════════════
+   LAYOUT — STICKY NAV + CONTENT
+════════════════════════════════════════════════════ */
+.menu-layout{display:grid;grid-template-columns:240px 1fr;max-width:1120px;margin:0 auto;padding:0 2.5rem;gap:0 4rem;align-items:start}
+
+/* ═══ STICKY CATEGORY NAV ══════════════════════════ */
+.cat-nav{position:sticky;top:80px;padding:3rem 0 3rem;align-self:start}
+.cat-nav-label{font-family:var(--fr);font-style:italic;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bark);opacity:.45;margin-bottom:1.4rem}
+.cat-nav-list{list-style:none;display:flex;flex-direction:column;gap:.2rem}
+.cat-nav-item a{display:flex;align-items:center;gap:.9rem;padding:.55rem .4rem;font-family:var(--fr);font-style:italic;font-size:.72rem;letter-spacing:.16em;color:var(--sumi);opacity:.4;transition:opacity .24s var(--ease),color .24s;border-left:2px solid transparent;padding-left:.8rem;margin-left:-.8rem}
+.cat-nav-item a:hover{opacity:.75}
+.cat-nav-item a.active{opacity:1;color:var(--bark);border-left-color:var(--bark)}
+.cat-nav-num{font-size:.6rem;letter-spacing:.1em;opacity:.55}
+.cat-nav-divider{margin:1.4rem 0;height:1px;background:rgba(140,110,75,.14)}
+.cat-nav-rsv{display:flex;flex-direction:column;gap:.7rem}
+.cat-nav-rsv-label{font-family:var(--fr);font-style:italic;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bark);opacity:.42}
+
+/* ═══ MENU CONTENT AREA ════════════════════════════ */
+.menu-content{padding:3.5rem 0 4rem}
+
+/* ═══ CATEGORY SECTION ═════════════════════════════ */
+.menu-cat{padding:3rem 0;border-bottom:1px solid rgba(140,110,75,.12)}
+.menu-cat:last-child{border-bottom:none}
+.cat-header{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:2rem}
+.cat-num{font-family:var(--fr);font-style:italic;font-size:3.2rem;color:var(--bark);opacity:.12;line-height:1;letter-spacing:-.02em;flex-shrink:0}
+.cat-name{font-family:var(--fh);font-size:1.15rem;color:var(--sumi);letter-spacing:.06em}
+.cat-name-en{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.18em;color:var(--bark);opacity:.4;margin-left:.3rem}
+
+/* ═══ MENU ITEMS ════════════════════════════════════ */
+.menu-items{display:flex;flex-direction:column;gap:0}
+.menu-item{padding:1.1rem 0;border-bottom:1px solid rgba(140,110,75,.08)}
+.menu-item:last-child{border-bottom:none}
+.item-main{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.28rem}
+.item-name{font-family:var(--fs);font-size:.88rem;font-weight:400;color:var(--sumi);letter-spacing:.05em;flex-shrink:0}
+.item-dot{flex:1;border-bottom:1px dotted rgba(140,110,75,.22);margin:0 .7rem .3rem}
+.item-price{font-family:var(--fh);font-size:1.05rem;color:var(--bark);white-space:nowrap;letter-spacing:.02em;flex-shrink:0}
+.item-price.inquiry{font-family:var(--fr);font-style:italic;font-size:.78rem;color:var(--bark);opacity:.6;letter-spacing:.08em;font-size:.78rem}
+.item-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.4rem}
+.item-tag{font-family:var(--fr);font-style:italic;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bark);background:rgba(140,110,75,.08);padding:.18rem .55rem;border-radius:99px;opacity:.75}
+.item-tag.tag-new{background:rgba(107,123,94,.1);color:var(--moss)}
+.item-tag.tag-member{background:rgba(196,151,122,.1);color:var(--terra)}
+.item-desc{font-family:var(--fs);font-size:.74rem;font-weight:300;color:var(--sumi);opacity:.5;letter-spacing:.04em;line-height:1.75;margin-bottom:.5rem}
+.item-actions{display:flex;gap:.8rem;align-items:center}
+.item-link{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.14em;color:var(--bark);opacity:.55;border-bottom:1px solid transparent;transition:opacity .22s,border-color .22s;padding-bottom:1px}
+.item-link:hover{opacity:.9;border-bottom-color:var(--bark)}
+
+/* ═══ FOOTNOTES PANEL ══════════════════════════════ */
+.menu-footnotes{background:var(--asa);border-radius:2px;padding:2rem 2.5rem;margin:2rem 0 0}
+.fn-title{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--bark);opacity:.5;margin-bottom:1rem}
+.fn-list{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.fn-list li{font-family:var(--fs);font-size:.73rem;font-weight:300;color:var(--sumi);opacity:.48;letter-spacing:.05em;line-height:1.75}
+
+/* ═══ CTA BLOCK ════════════════════════════════════ */
+.menu-cta{background:var(--sumi);position:relative;overflow:hidden;text-align:center;padding:5rem 2rem;margin-top:0}
+.menu-cta .grain{opacity:.022}
+.cta-eyebrow{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(242,237,228,.3);margin-bottom:1.2rem}
+.cta-headline{font-family:var(--fh);font-size:clamp(2rem,4vw,3.2rem);color:var(--kiji);letter-spacing:.04em;line-height:1.3;margin-bottom:.6rem}
+.cta-sub{font-family:var(--fr);font-style:italic;font-size:.75rem;letter-spacing:.16em;color:var(--kiji);opacity:.35;margin-bottom:2rem}
+.cta-btns{display:flex;flex-direction:column;align-items:center;gap:.8rem}
+.btn-line-cta{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:1rem 3rem;background:#06C755;color:#fff;font-family:var(--fs);font-size:.88rem;font-weight:400;letter-spacing:.14em;border-radius:99px;transition:background .28s var(--ease),transform .28s var(--ease),box-shadow .28s var(--ease);box-shadow:0 6px 24px rgba(6,199,85,.22)}
+.btn-line-cta:hover{background:#05b84d;transform:translateY(-2px);box-shadow:0 10px 32px rgba(6,199,85,.32)}
+.btn-cta-outline{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;padding:.85rem 2.4rem;background:transparent;color:var(--kiji);font-family:var(--fs);font-size:.82rem;font-weight:300;letter-spacing:.14em;border:1px solid rgba(242,237,228,.32);border-radius:99px;transition:background .28s var(--ease),transform .28s var(--ease)}
+.btn-cta-outline:hover{background:rgba(242,237,228,.08);transform:translateY(-2px)}
+.cta-line-id{font-family:var(--fr);font-style:italic;font-size:.6rem;letter-spacing:.14em;color:var(--kiji);opacity:.28;margin-top:-.3rem}
+.cancel-note{font-family:var(--fs);font-size:.7rem;font-weight:300;color:var(--kiji);opacity:.26;letter-spacing:.06em;line-height:1.8;margin-top:.5rem}
+
+/* ═══ FOOTER ════════════════════════════════════════ */
+footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0;color:var(--sumi)}
+.footer-inner{max-width:1120px;margin:0 auto;padding:0 2.5rem}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.footer-logo{font-family:var(--fr);font-style:italic;font-weight:300;font-size:1.3rem;letter-spacing:.1em;color:var(--sumi);margin-bottom:.3rem}
+.footer-tagline{font-family:var(--fh);font-size:.78rem;color:var(--bark);opacity:.65;letter-spacing:.06em}
+.footer-info{font-family:var(--fs);font-size:.72rem;font-weight:300;color:var(--sumi);opacity:.42;letter-spacing:.05em;line-height:1.85;margin-top:1rem}
+.footer-sns{display:flex;gap:.8rem;align-items:center;margin-top:.8rem}
+.footer-sns a{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--sumi);opacity:.35;transition:opacity .22s}
+.footer-sns a:hover{opacity:.75}
+.footer-bottom{border-top:1px solid var(--kiji-d);padding:1.2rem 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem}
+.footer-copy{font-family:var(--fr);font-style:italic;font-size:.6rem;letter-spacing:.15em;color:var(--sumi);opacity:.25}
+
+/* ═══ MOBILE RESPONSIVE ════════════════════════════ */
+@media(max-width:900px){
+  .menu-layout{grid-template-columns:1fr;padding:0 1.5rem;gap:0}
+  .cat-nav{display:none}
+  .menu-content{padding:2rem 0 3rem}
+}
+@media(max-width:600px){
+  .page-header{padding:8rem 1.5rem 3.5rem;min-height:30vh}
+  .ph-ghost{font-size:clamp(8rem,22vw,16rem)}
+  .cat-header{gap:.8rem}
+  .cat-num{font-size:2.4rem}
+  .menu-footnotes{padding:1.5rem 1.2rem}
+  .menu-cta{padding:4rem 1.5rem}
+  .cta-btns{width:100%;max-width:320px;margin:0 auto}
+  .btn-line-cta,.btn-cta-outline{width:100%}
+  .footer-top{flex-direction:column;gap:1.2rem}
+}
+
+/* ═══ MOBILE STICKY CAT NAV (horizontal) ══════════ */
+.cat-nav-mobile{display:none;position:sticky;top:56px;z-index:100;background:var(--kiji);border-bottom:1px solid rgba(140,110,75,.13);padding:.6rem 1.5rem;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:.5rem}
+.cat-nav-mobile::-webkit-scrollbar{display:none}
+.cat-nav-mobile a{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fr);font-style:italic;font-size:.65rem;letter-spacing:.16em;color:var(--sumi);opacity:.45;padding:.35rem .8rem;border:1px solid transparent;border-radius:99px;transition:opacity .22s,border-color .22s;white-space:nowrap}
+.cat-nav-mobile a.active{opacity:1;color:var(--bark);border-color:rgba(140,110,75,.35)}
+@media(max-width:900px){
+  .cat-nav-mobile{display:flex}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ NAV ══════════════ -->
+<nav id="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">noble.</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html#menu">Menu</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="index.html#staff">Stylist</a></li>
+      <li><a href="index.html#access">Access</a></li>
+      <li><a href="reservation.html" class="nav-rsv">Reservation</a></li>
+    </ul>
+    <div class="nav-ham" id="nav-ham" onclick="toggleNav()" aria-label="メニュー">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════ PAGE HEADER ══════════════ -->
+<header class="page-header">
+  <div class="grain"></div>
+  <div class="ph-ghost">menu</div>
+  <p class="ph-eyebrow fade-in d1">noble. — Service & Price</p>
+  <h1 class="ph-title fade-up d2">メニューと料金</h1>
+  <p class="ph-sub fade-up d3">すべて税込 / ロング料金なし</p>
+</header>
+
+<!-- ══════════════ MOBILE CAT NAV ══════════════ -->
+<div class="cat-nav-mobile" id="cat-nav-mobile">
+  <a href="#cat-cut" class="active">01 カット</a>
+  <a href="#cat-color">02 カラー</a>
+  <a href="#cat-perm">03 パーマ</a>
+  <a href="#cat-straight">04 縮毛矯正</a>
+  <a href="#cat-treatment">05 トリートメント</a>
+  <a href="#cat-spa">06 ヘッドスパ</a>
+</div>
+
+<!-- ══════════════ MENU LAYOUT ══════════════ -->
+<main>
+<div class="menu-layout">
+
+  <!-- STICKY CATEGORY NAV -->
+  <aside class="cat-nav" id="cat-nav">
+    <div class="cat-nav-label">Categories</div>
+    <ul class="cat-nav-list">
+      <li class="cat-nav-item"><a href="#cat-cut" class="active"><span class="cat-nav-num">01</span> カット</a></li>
+      <li class="cat-nav-item"><a href="#cat-color"><span class="cat-nav-num">02</span> カラー</a></li>
+      <li class="cat-nav-item"><a href="#cat-perm"><span class="cat-nav-num">03</span> パーマ</a></li>
+      <li class="cat-nav-item"><a href="#cat-straight"><span class="cat-nav-num">04</span> 縮毛矯正</a></li>
+      <li class="cat-nav-item"><a href="#cat-treatment"><span class="cat-nav-num">05</span> トリートメント</a></li>
+      <li class="cat-nav-item"><a href="#cat-spa"><span class="cat-nav-num">06</span> ヘッドスパ</a></li>
+    </ul>
+
+    <div class="cat-nav-divider"></div>
+
+    <div class="cat-nav-rsv">
+      <div class="cat-nav-rsv-label">Reservation</div>
+      <a href="https://line.me/R/ti/p/@hxj9946m" class="btn-line" style="font-size:.74rem;padding:.65rem 1.4rem;">LINEで予約</a>
+      <a href="reservation.html" class="btn-outline" style="font-size:.74rem;padding:.6rem 1.3rem;">Webで予約</a>
+    </div>
+  </aside>
+
+  <!-- MENU CONTENT -->
+  <div class="menu-content">
+
+    <!-- 01 カット -->
+    <section class="menu-cat reveal" id="cat-cut">
+      <div class="cat-header">
+        <span class="cat-num">01</span>
+        <div>
+          <span class="cat-name">カット</span>
+          <span class="cat-name-en">Cut</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">デザインカット</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,400</span>
+          </div>
+          <div class="item-desc">カウンセリングを元に髪質・骨格に合わせて仕上げます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">学生カット（中・高生まで）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,000</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+            <span class="item-tag">最終受付 18:00</span>
+          </div>
+          <div class="item-desc">18時以降はデザインカット料金（¥4,400）になります。</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">キッズカット</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥3,500</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+            <span class="item-tag">最終受付 18:00</span>
+          </div>
+          <div class="item-desc">18時以降はデザインカット料金（¥4,400）になります。</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">前髪カット</span>
+            <span class="item-dot"></span>
+            <span class="item-price inquiry">要問い合わせ</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+            <span class="item-tag">ネット予約対象外</span>
+          </div>
+          <div class="item-desc">ご予約はLINEまたはご来店時にお申し付けください。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで問い合わせ →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">眉カット</span>
+            <span class="item-dot"></span>
+            <span class="item-price inquiry">要問い合わせ</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">ネット予約対象外</span>
+          </div>
+          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 02 カラー -->
+    <section class="menu-cat reveal" id="cat-color">
+      <div class="cat-header">
+        <span class="cat-num">02</span>
+        <div>
+          <span class="cat-name">カラー</span>
+          <span class="cat-name-en">Color</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">ヘアカラー（フル）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥6,600</span>
+          </div>
+          <div class="item-desc">髪・頭皮にやさしいオーガニックカラー。シャンプー・ブロー込み。補修トリートメントのサービスあり。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">リタッチカラー（前回ご来店から50日以内）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,800</span>
+          </div>
+          <div class="item-desc">シャンプー・ブロー込み。補修トリートメントのサービスあり。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">月1リタッチカラー（前回から30日以内）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,400</span>
+          </div>
+          <div class="item-desc">シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">ブリーチカラー</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥7,700</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">Wカラー／ハイライトor全体ブリーチ＋カラー</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥13,500〜</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">デザインにより料金が変動することがあります。事前にご相談ください。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 03 パーマ -->
+    <section class="menu-cat reveal" id="cat-perm">
+      <div class="cat-header">
+        <span class="cat-num">03</span>
+        <div>
+          <span class="cat-name">パーマ</span>
+          <span class="cat-name-en">Perm</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">パーマ</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥7,700〜</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">髪に負担の少ない薬剤使用。単品の場合、シャンプー・ブロー別途¥1,100。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">前髪パーマ</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥3,300〜</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">単品の場合、シャンプー・ブロー別途¥1,100。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 04 縮毛矯正 -->
+    <section class="menu-cat reveal" id="cat-straight">
+      <div class="cat-header">
+        <span class="cat-num">04</span>
+        <div>
+          <span class="cat-name">縮毛矯正</span>
+          <span class="cat-name-en">Straightening</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">ストレートパーマ／縮毛矯正</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥11,000</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">ナチュラルなストレートに仕上げます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">前髪ストレート／部分ストレート</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,400〜</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-member">顧客様のみ</span>
+          </div>
+          <div class="item-desc">範囲により料金が変動します。単品の場合シャンプー・ブロー別途¥1,100。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 05 トリートメント -->
+    <section class="menu-cat reveal" id="cat-treatment">
+      <div class="cat-header">
+        <span class="cat-num">05</span>
+        <div>
+          <span class="cat-name">トリートメント</span>
+          <span class="cat-name-en">Treatment</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">AMASIAトリートメント・スピードインピタリ</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,400</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-new">単品/追加両対応</span>
+          </div>
+          <div class="item-desc">追加メニューの場合¥1,100 OFF。超音波アイロン使用。8種の補修成分と11種の質感成分が毛髪内部に高浸透。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">TOKIOインカラミトリートメント（特許取得）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥5,500</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag tag-new">単品/追加両対応</span>
+          </div>
+          <div class="item-desc">追加メニューの場合¥1,100 OFF。超音波アイロン使用。ブリーチ毛・パサつき・まとまりのなさにお悩みの方に。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">超音波アイロン</span>
+            <span class="item-dot"></span>
+            <span class="item-price inquiry">要問い合わせ</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">ネット予約対象外</span>
+          </div>
+          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 06 ヘッドスパ -->
+    <section class="menu-cat reveal" id="cat-spa">
+      <div class="cat-header">
+        <span class="cat-num">06</span>
+        <div>
+          <span class="cat-name">ヘッドスパ</span>
+          <span class="cat-name-en">Head Spa</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">炭酸クレンジングヘッドスパ 5分</span>
+            <span class="item-dot"></span>
+            <span class="item-price inquiry">要問い合わせ</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">追加メニューのみ</span>
+            <span class="item-tag">ネット予約対象外</span>
+          </div>
+          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">炭酸クレンジングヘッドスパ 10分</span>
+            <span class="item-dot"></span>
+            <span class="item-price inquiry">要問い合わせ</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">追加メニューのみ</span>
+            <span class="item-tag">ネット予約対象外</span>
+          </div>
+          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">炭酸クレンジングヘッドスパ 20分＋クイックトリートメント</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥4,400</span>
+          </div>
+          <div class="item-tags">
+            <span class="item-tag">追加メニューのみ</span>
+          </div>
+          <div class="item-desc">炭酸ケア後の補修トリートメントで効果◎</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTNOTES -->
+    <div class="menu-footnotes reveal reveal-d2">
+      <div class="fn-title">Notes</div>
+      <ul class="fn-list">
+        <li>※ 価格はすべて税込表示です</li>
+        <li>※ ロング料金はいただいておりません</li>
+        <li>※ ご新規様向けのお得なクーポンはホットペッパービューティーにてご確認ください</li>
+        <li>※ 「顧客様のみ」のメニューは2回目以降のお客様限定です</li>
+        <li>※ 「ネット予約対象外」のメニューはLINEまたはご来店時にお申し付けください</li>
+        <li>※ 施術内容によって所要時間が異なります。事前にご確認ください</li>
+      </ul>
+    </div>
+
+  </div><!-- /menu-content -->
+</div><!-- /menu-layout -->
+
+<!-- ══════════════ CTA ══════════════ -->
+<div class="menu-cta">
+  <div class="grain"></div>
+  <p class="cta-eyebrow reveal">Reservation</p>
+  <h2 class="cta-headline reveal reveal-d1">ご予約はこちら</h2>
+  <p class="cta-sub reveal reveal-d2">マンツーマンのプライベートサロン</p>
+  <div class="cta-btns reveal reveal-d3">
+    <a href="https://line.me/R/ti/p/@hxj9946m" class="btn-line-cta">LINEで予約・相談する</a>
+    <p class="cta-line-id">LINE ID: @hxj9946m</p>
+    <a href="reservation.html" class="btn-cta-outline">Webで予約する</a>
+    <p class="cancel-note">お電話に出られない場合がございます。<br>LINEまたはWeb予約のご利用をおすすめします。</p>
+  </div>
+</div>
+
+</main>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">noble.</div>
+        <div class="footer-tagline">あなただけの、静かな時間。</div>
+        <div class="footer-info">大阪府大阪市城東区成育2-1-9<br>10:00–20:00 / 不定休<br>京阪野江駅 徒歩30秒</div>
+        <div class="footer-sns">
+          <a href="#">Instagram</a>
+          <a href="https://line.me/R/ti/p/@hxj9946m">LINE @hxj9946m</a>
+        </div>
+      </div>
+      <div>
+        <a href="index.html" style="font-family:var(--fr);font-style:italic;font-size:.65rem;letter-spacing:.2em;color:var(--bark);opacity:.5;">← サイトトップへ戻る</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2025 noble. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════ JS ══════════════ -->
+<script>
+function toggleNav() {
+  document.getElementById('nav-links').classList.toggle('open');
+  document.getElementById('nav-ham').classList.toggle('is-open');
+}
+document.querySelectorAll('#nav-links a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('nav-ham').classList.remove('is-open');
+  });
+});
+
+// Scroll-spy for desktop sticky nav + mobile horizontal nav
+(function() {
+  const cats = ['cat-cut','cat-color','cat-perm','cat-straight','cat-treatment','cat-spa'];
+  const desktopLinks = document.querySelectorAll('.cat-nav-item a');
+  const mobileLinks  = document.querySelectorAll('.cat-nav-mobile a');
+
+  function setActive(id) {
+    desktopLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    mobileLinks.forEach(a  => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+    // scroll active mobile link into view
+    const mActive = document.querySelector('.cat-nav-mobile a.active');
+    if (mActive) mActive.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+  }
+
+  function onScroll() {
+    const offset = 120;
+    let current = cats[0];
+    cats.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= offset) current = id;
+    });
+    setActive(current);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+// Reveal on scroll
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }});
+}, { threshold: 0.08 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
