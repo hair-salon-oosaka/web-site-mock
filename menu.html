@@ -96,7 +96,7 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 .menu-layout{display:grid;grid-template-columns:240px 1fr;max-width:1120px;margin:0 auto;padding:0 2.5rem;gap:0 4rem;align-items:start}
 
 /* ═══ STICKY CATEGORY NAV ══════════════════════════ */
-.cat-nav{position:sticky;top:80px;padding:3rem 0 3rem;align-self:start}
+.cat-nav{position:sticky;top:64px;padding:3rem 0 3rem;align-self:start}
 .cat-nav-label{font-family:var(--fr);font-style:italic;font-size:.58rem;letter-spacing:.26em;text-transform:uppercase;color:var(--bark);opacity:.45;margin-bottom:1.4rem}
 .cat-nav-list{list-style:none;display:flex;flex-direction:column;gap:.2rem}
 .cat-nav-item a{display:flex;align-items:center;gap:.9rem;padding:.55rem .4rem;font-family:var(--fr);font-style:italic;font-size:.72rem;letter-spacing:.16em;color:var(--sumi);opacity:.4;transition:opacity .24s var(--ease),color .24s;border-left:2px solid transparent;padding-left:.8rem;margin-left:-.8rem}
@@ -111,7 +111,7 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 .menu-content{padding:3.5rem 0 4rem}
 
 /* ═══ CATEGORY SECTION ═════════════════════════════ */
-.menu-cat{padding:3rem 0;border-bottom:1px solid rgba(140,110,75,.12)}
+.menu-cat{padding:3rem 0;border-bottom:1px solid rgba(140,110,75,.12);scroll-margin-top:72px}
 .menu-cat:last-child{border-bottom:none}
 .cat-header{display:flex;align-items:baseline;gap:1.2rem;margin-bottom:2rem}
 .cat-num{font-family:var(--fr);font-style:italic;font-size:3.2rem;color:var(--bark);opacity:.12;line-height:1;letter-spacing:-.02em;flex-shrink:0}
@@ -174,6 +174,7 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
   .menu-layout{grid-template-columns:1fr;padding:0 1.5rem;gap:0}
   .cat-nav{display:none}
   .menu-content{padding:2rem 0 3rem}
+  .menu-cat{scroll-margin-top:108px}
 }
 @media(max-width:600px){
   .page-header{padding:8rem 1.5rem 3.5rem;min-height:30vh}
@@ -188,7 +189,7 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 }
 
 /* ═══ MOBILE STICKY CAT NAV (horizontal) ══════════ */
-.cat-nav-mobile{display:none;position:sticky;top:56px;z-index:100;background:var(--kiji);border-bottom:1px solid rgba(140,110,75,.13);padding:.6rem 1.5rem;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:.5rem}
+.cat-nav-mobile{display:none;position:sticky;top:52px;z-index:100;background:var(--kiji);border-bottom:1px solid rgba(140,110,75,.13);padding:.6rem 1.5rem;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:.5rem}
 .cat-nav-mobile::-webkit-scrollbar{display:none}
 .cat-nav-mobile a{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--fr);font-style:italic;font-size:.65rem;letter-spacing:.16em;color:var(--sumi);opacity:.45;padding:.35rem .8rem;border:1px solid transparent;border-radius:99px;transition:opacity .22s,border-color .22s;white-space:nowrap}
 .cat-nav-mobile a.active{opacity:1;color:var(--bark);border-color:rgba(140,110,75,.35)}
@@ -718,7 +719,8 @@ document.querySelectorAll('#nav-links a').forEach(a => {
   }
 
   function onScroll() {
-    const offset = 120;
+    const isMobile = window.innerWidth <= 900;
+    const offset = isMobile ? 120 : 80;
     let current = cats[0];
     cats.forEach(id => {
       const el = document.getElementById(id);
