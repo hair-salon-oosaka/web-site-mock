@@ -60,7 +60,8 @@
       align-items:center;
     }
     .hero-head.stuck .logo{color:var(--sumi);font-size:22px}
-    .hero-head.stuck .logo-sub{color:rgba(42,38,32,.5)}
+    .hero-head.stuck .logo-sep{opacity:.4}
+    .hero-head.stuck .logo-ja{color:rgba(42,38,32,.75)}
     .hero-head.stuck .nav a{color:var(--sumi);opacity:.55}
     .hero-head.stuck .nav a:hover{opacity:1}
     .hero-head.stuck .nav .reserve{border-color:rgba(42,38,32,.3);color:var(--sumi)}
@@ -68,21 +69,18 @@
     .hero-head.stuck .nav-ham span{background:var(--sumi)}
 
     .logo{
-      display:flex;align-items:center;gap:10px;
-      font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
-      font-size:30px;line-height:1;letter-spacing:.14em;color:#fff;
+      display:flex;align-items:center;gap:0;
+      font-family:'Yu Mincho','游明朝体','Noto Serif JP',serif;
+      line-height:1;color:#fff;
       transition:color .3s,font-size .3s;
     }
     .logo-img{display:none;width:auto;height:38px;object-fit:contain}
-    .logo-text{transition:color .3s}
+    .logo-text{display:flex;align-items:center;transition:color .3s}
+    .logo-en{font-style:italic;font-weight:300;font-size:1.8rem;letter-spacing:.08em}
+    .logo-sep{font-style:normal;font-weight:300;font-size:1.8rem;letter-spacing:0;opacity:.7;margin:0 .45em;transition:opacity .3s}
+    .logo-ja{font-style:normal;font-weight:400;font-size:1.5rem;letter-spacing:.04em;margin-left:.6em;transition:color .3s}
     .hero-head.stuck .logo-img{display:block}
     .hero-head.stuck .logo-text{display:none}
-    .logo-sub{
-      display:block;font-style:normal;
-      font-family:'Noto Serif JP',serif;font-size:9px;letter-spacing:.12em;
-      margin-top:7px;color:rgba(255,255,255,.65);
-      transition:color .3s;
-    }
 
     /* desktop nav links */
     .nav{display:flex;gap:10px;font-size:10px;letter-spacing:.08em;margin-top:4px;align-items:center}
@@ -276,8 +274,9 @@
       .hero{height:100vh;min-height:740px}
       .hero-head{top:38px;left:56px;right:56px;align-items:center}
       .hero-head.stuck{padding:16px 56px}
-      .logo{font-size:38px}
-      .logo-sub{font-size:10px;margin-top:9px}
+      .logo-en{font-size:2.2rem}
+      .logo-sep{font-size:2.2rem}
+      .logo-ja{font-size:1.85rem}
       .nav{gap:28px;font-size:12px;margin-top:0}
       .nav .reserve{padding:9px 16px;font-size:11px}
       .hero-copy{left:auto;right:9vw;bottom:18vh;width:480px;text-align:left}
@@ -408,7 +407,7 @@
     <header class="hero-head" id="hero-head">
       <a href="#top" class="logo">
         <img src="logo.png" alt="noble." class="logo-img">
-        <span class="logo-text">noble.<span class="logo-sub">野江</span></span>
+        <span class="logo-text"><span class="logo-en">noble.</span><span class="logo-ja">野江</span></span>
       </a>
       <nav class="nav serif-en">
         <a href="#concept">Concept</a>
