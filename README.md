@@ -33,3 +33,5 @@
 ## デプロイ
 
 Cloudflare Pages にて自動デプロイ（`main` ブランチへの push で反映）。
+
+- **本番URL**：https://web-site-mock.pages.dev/
