@@ -73,12 +73,10 @@
       font-size:30px;line-height:1;letter-spacing:.14em;color:#fff;
       transition:color .3s,font-size .3s;
     }
-    .logo-img{
-      width:auto;height:36px;object-fit:contain;
-      filter:brightness(0) invert(1);
-      transition:filter .3s;
-    }
-    .hero-head.stuck .logo-img{filter:brightness(0)}
+    .logo-img{display:none;width:auto;height:38px;object-fit:contain}
+    .logo-text{transition:color .3s}
+    .hero-head.stuck .logo-img{display:block}
+    .hero-head.stuck .logo-text{display:none}
     .logo-sub{
       display:block;font-style:normal;
       font-family:'Noto Serif JP',serif;font-size:9px;letter-spacing:.12em;
@@ -410,7 +408,7 @@
     <header class="hero-head" id="hero-head">
       <a href="#top" class="logo">
         <img src="logo.png" alt="noble." class="logo-img">
-        <span class="logo-sub">Private Hair Salon</span>
+        <span class="logo-text">noble.<span class="logo-sub">Private Hair Salon</span></span>
       </a>
       <nav class="nav serif-en">
         <a href="#concept">Concept</a>
