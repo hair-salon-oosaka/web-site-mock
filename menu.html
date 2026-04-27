@@ -118,6 +118,24 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 .cat-name{font-family:var(--fh);font-size:1.15rem;color:var(--sumi);letter-spacing:.06em}
 .cat-name-en{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.18em;color:var(--bark);opacity:.4;margin-left:.3rem}
 
+/* ═══ BADGE ═════════════════════════════════════════ */
+.badge{display:inline-flex;align-items:center;padding:.22rem .72rem;border-radius:2px;font-family:var(--fs);font-size:.6rem;font-weight:400;letter-spacing:.1em;color:#fff;margin-bottom:.55rem;flex-shrink:0}
+.badge-new{background:var(--moss)}
+.badge-all{background:var(--terra)}
+.badge-return{background:var(--bark)}
+
+/* ═══ COUPON CARDS ══════════════════════════════════ */
+.coupon-items{display:flex;flex-direction:column;gap:.9rem}
+.coupon-card{background:rgba(237,229,216,.5);padding:1.3rem 1.6rem;border-left:2px solid}
+.coupon-card-new{border-left-color:var(--moss)}
+.coupon-card-all{border-left-color:var(--terra)}
+.coupon-card-return{border-left-color:var(--bark)}
+.coupon-name{font-family:var(--fh);font-size:.92rem;color:var(--sumi);letter-spacing:.05em;margin-bottom:.4rem;line-height:1.55}
+.coupon-desc{font-family:var(--fs);font-size:.74rem;font-weight:300;color:var(--sumi);opacity:.52;line-height:1.78;margin-bottom:.85rem}
+.coupon-price-row{display:flex;align-items:baseline;gap:.8rem}
+.coupon-price{font-family:var(--fh);font-size:1.1rem;color:var(--bark);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.coupon-orig{font-family:var(--fr);font-size:.7rem;color:var(--sumi);opacity:.35;text-decoration:line-through;font-style:italic}
+
 /* ═══ MENU ITEMS ════════════════════════════════════ */
 .menu-items{display:flex;flex-direction:column;gap:0}
 .menu-item{padding:1.1rem 0;border-bottom:1px solid rgba(140,110,75,.08)}
@@ -126,11 +144,9 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 .item-name{font-family:var(--fs);font-size:.88rem;font-weight:400;color:var(--sumi);letter-spacing:.05em;flex:1;min-width:0}
 .item-dot{flex:0 0 auto;border-bottom:1px dotted rgba(140,110,75,.22);width:40px;margin:0 .4rem .3rem}
 .item-price{font-family:var(--fh);font-size:1.05rem;color:var(--bark);white-space:nowrap;letter-spacing:.02em;flex-shrink:0;font-variant-numeric:tabular-nums;text-align:right;min-width:96px}
-.item-price.inquiry{font-family:var(--fr);font-style:italic;font-size:.78rem;color:var(--bark);opacity:.6;letter-spacing:.08em;font-size:.78rem}
+.item-price.inquiry{font-family:var(--fr);font-style:italic;font-size:.78rem;color:var(--bark);opacity:.6;letter-spacing:.08em}
 .item-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.4rem}
 .item-tag{font-family:var(--fr);font-style:italic;font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--bark);background:rgba(140,110,75,.08);padding:.18rem .55rem;border-radius:99px;opacity:.75}
-.item-tag.tag-new{background:rgba(107,123,94,.1);color:var(--moss)}
-.item-tag.tag-member{background:rgba(196,151,122,.1);color:var(--terra)}
 .item-desc{font-family:var(--fs);font-size:.74rem;font-weight:300;color:var(--sumi);opacity:.5;letter-spacing:.04em;line-height:1.75;margin-bottom:.5rem}
 .item-actions{display:flex;gap:.8rem;align-items:center}
 .item-link{font-family:var(--fr);font-style:italic;font-size:.62rem;letter-spacing:.14em;color:var(--bark);opacity:.55;border-bottom:1px solid transparent;transition:opacity .22s,border-color .22s;padding-bottom:1px}
@@ -186,8 +202,10 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
   .item-price{font-size:.95rem}
   .item-price.inquiry{font-size:.74rem}
   .item-desc,.item-tags,.item-actions{display:none}
+  .coupon-desc,.coupon-orig{display:none}
   .menu-item{padding:.85rem 0}
   .item-main{margin-bottom:0}
+  .coupon-card{padding:1rem 1.2rem}
   .menu-footnotes{padding:1.5rem 1.2rem}
   .menu-cta{padding:4rem 1.5rem}
   .cta-btns{width:100%;max-width:320px;margin:0 auto}
@@ -235,12 +253,12 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
 <!-- ══════════════ MOBILE CAT NAV ══════════════ -->
 <div class="cat-nav-mobile" id="cat-nav-mobile">
-  <a href="#cat-cut" class="active">01 カット</a>
-  <a href="#cat-color">02 カラー</a>
-  <a href="#cat-perm">03 パーマ</a>
-  <a href="#cat-straight">04 縮毛矯正</a>
-  <a href="#cat-treatment">05 トリートメント</a>
-  <a href="#cat-spa">06 ヘッドスパ</a>
+  <a href="#cat-set" class="active">01 クーポン・セット</a>
+  <a href="#cat-cut">02 カット</a>
+  <a href="#cat-color">03 カラー</a>
+  <a href="#cat-perm">04 パーマ・縮毛矯正</a>
+  <a href="#cat-treatment">05 TR・ヘッドスパ</a>
+  <a href="#cat-other">06 その他</a>
 </div>
 
 <!-- ══════════════ MENU LAYOUT ══════════════ -->
@@ -251,12 +269,12 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
   <aside class="cat-nav" id="cat-nav">
     <div class="cat-nav-label">Categories</div>
     <ul class="cat-nav-list">
-      <li class="cat-nav-item"><a href="#cat-cut" class="active"><span class="cat-nav-num">01</span> カット</a></li>
-      <li class="cat-nav-item"><a href="#cat-color"><span class="cat-nav-num">02</span> カラー</a></li>
-      <li class="cat-nav-item"><a href="#cat-perm"><span class="cat-nav-num">03</span> パーマ</a></li>
-      <li class="cat-nav-item"><a href="#cat-straight"><span class="cat-nav-num">04</span> 縮毛矯正</a></li>
-      <li class="cat-nav-item"><a href="#cat-treatment"><span class="cat-nav-num">05</span> トリートメント</a></li>
-      <li class="cat-nav-item"><a href="#cat-spa"><span class="cat-nav-num">06</span> ヘッドスパ</a></li>
+      <li class="cat-nav-item"><a href="#cat-set" class="active"><span class="cat-nav-num">01</span> クーポン・セット</a></li>
+      <li class="cat-nav-item"><a href="#cat-cut"><span class="cat-nav-num">02</span> カット</a></li>
+      <li class="cat-nav-item"><a href="#cat-color"><span class="cat-nav-num">03</span> カラー</a></li>
+      <li class="cat-nav-item"><a href="#cat-perm"><span class="cat-nav-num">04</span> パーマ・縮毛矯正</a></li>
+      <li class="cat-nav-item"><a href="#cat-treatment"><span class="cat-nav-num">05</span> TR・ヘッドスパ</a></li>
+      <li class="cat-nav-item"><a href="#cat-other"><span class="cat-nav-num">06</span> その他</a></li>
     </ul>
 
     <div class="cat-nav-divider"></div>
@@ -271,10 +289,55 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
   <!-- MENU CONTENT -->
   <div class="menu-content">
 
-    <!-- 01 カット -->
-    <section class="menu-cat reveal" id="cat-cut">
+    <!-- 01 クーポン・セットメニュー -->
+    <section class="menu-cat reveal" id="cat-set">
       <div class="cat-header">
         <span class="cat-num">01</span>
+        <div>
+          <span class="cat-name">クーポン・セットメニュー</span>
+          <span class="cat-name-en">Coupon & Set</span>
+        </div>
+      </div>
+
+      <div class="coupon-items">
+
+        <div class="coupon-card coupon-card-new">
+          <span class="badge badge-new">新規限定</span>
+          <div class="coupon-name">デザインカット ＋ フルカラー ＋ 髪質改善トリートメント</div>
+          <div class="coupon-desc">初めての方におすすめの、トータルケアセットです。<br>カウンセリングから仕上げまで、丁寧にご対応いたします。</div>
+          <div class="coupon-price-row">
+            <span class="coupon-price">¥14,300</span>
+            <span class="coupon-orig">通常 ¥16,500</span>
+          </div>
+        </div>
+
+        <div class="coupon-card coupon-card-all">
+          <span class="badge badge-all">全員対象</span>
+          <div class="coupon-name">カット ＋ スキャルプヘッドスパ（30分）</div>
+          <div class="coupon-desc">日々の疲れを癒やしながら、スタイルを整えるリフレッシュプランです。</div>
+          <div class="coupon-price-row">
+            <span class="coupon-price">¥6,600</span>
+            <span class="coupon-orig">通常 ¥7,700</span>
+          </div>
+        </div>
+
+        <div class="coupon-card coupon-card-return">
+          <span class="badge badge-return">再来限定</span>
+          <div class="coupon-name">メンテナンスカット ＋ カラーリタッチ</div>
+          <div class="coupon-desc">定期的なケアに最適な、スピードと質を両立したメニューです。</div>
+          <div class="coupon-price-row">
+            <span class="coupon-price">¥7,700</span>
+            <span class="coupon-orig">通常 ¥8,800</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 02 カット -->
+    <section class="menu-cat reveal" id="cat-cut">
+      <div class="cat-header">
+        <span class="cat-num">02</span>
         <div>
           <span class="cat-name">カット</span>
           <span class="cat-name-en">Cut</span>
@@ -285,11 +348,11 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">デザインカット</span>
+            <span class="item-name">デザインカット（シャンプー・ブロー込）</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥4,400</span>
+            <span class="item-price">¥4,400〜</span>
           </div>
-          <div class="item-desc">カウンセリングを元に髪質・骨格に合わせて仕上げます。シャンプー・ブロー込み。</div>
+          <div class="item-desc">カウンセリングを元に骨格・髪質に合わせて仕上げます。再現性の高いカットスタイルをご提案。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
             <a href="reservation.html" class="item-link">Webで予約 →</a>
@@ -298,65 +361,36 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">学生カット（中・高生まで）</span>
+            <span class="item-name">メンズカット</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥4,000</span>
+            <span class="item-price">¥4,000〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-            <span class="item-tag">最終受付 18:00</span>
-          </div>
-          <div class="item-desc">18時以降はデザインカット料金（¥4,400）になります。</div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">キッズカット</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥3,500</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-            <span class="item-tag">最終受付 18:00</span>
-          </div>
-          <div class="item-desc">18時以降はデザインカット料金（¥4,400）になります。</div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">前髪カット</span>
-            <span class="item-dot"></span>
-            <span class="item-price inquiry">要問い合わせ</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-            <span class="item-tag">ネット予約対象外</span>
-          </div>
-          <div class="item-desc">ご予約はLINEまたはご来店時にお申し付けください。</div>
+          <div class="item-desc">骨格に合わせた清潔感のあるスタイルに。シャンプー・ブロー込み。</div>
           <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで問い合わせ →</a>
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
           </div>
         </div>
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">眉カット</span>
+            <span class="item-name">キッズ・ジュニアカット</span>
             <span class="item-dot"></span>
-            <span class="item-price inquiry">要問い合わせ</span>
+            <span class="item-price">¥2,500〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag">ネット予約対象外</span>
+          <div class="item-desc">お子様も安心してご来店いただけます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
           </div>
-          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
         </div>
 
       </div>
     </section>
 
-    <!-- 02 カラー -->
+    <!-- 03 カラー -->
     <section class="menu-cat reveal" id="cat-color">
       <div class="cat-header">
-        <span class="cat-num">02</span>
+        <span class="cat-num">03</span>
         <div>
           <span class="cat-name">カラー</span>
           <span class="cat-name-en">Color</span>
@@ -367,11 +401,11 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">ヘアカラー（フル）</span>
+            <span class="item-name">フルカラー（全体染め）</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥6,600</span>
+            <span class="item-price">¥6,600〜</span>
           </div>
-          <div class="item-desc">髪・頭皮にやさしいオーガニックカラー。シャンプー・ブロー込み。補修トリートメントのサービスあり。</div>
+          <div class="item-desc">ダメージを抑え、ツヤと透明感を出すカラーリング。シャンプー・ブロー込み。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
             <a href="reservation.html" class="item-link">Webで予約 →</a>
@@ -380,145 +414,100 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">リタッチカラー（前回ご来店から50日以内）</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥4,800</span>
-          </div>
-          <div class="item-desc">シャンプー・ブロー込み。補修トリートメントのサービスあり。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
-            <a href="reservation.html" class="item-link">Webで予約 →</a>
-          </div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">月1リタッチカラー（前回から30日以内）</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥4,400</span>
-          </div>
-          <div class="item-desc">シャンプー・ブロー込み。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
-            <a href="reservation.html" class="item-link">Webで予約 →</a>
-          </div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">ブリーチカラー</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥7,700</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-          </div>
-          <div class="item-desc">シャンプー・ブロー込み。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
-          </div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">Wカラー／ハイライトor全体ブリーチ＋カラー</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥13,500〜</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-          </div>
-          <div class="item-desc">デザインにより料金が変動することがあります。事前にご相談ください。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 03 パーマ -->
-    <section class="menu-cat reveal" id="cat-perm">
-      <div class="cat-header">
-        <span class="cat-num">03</span>
-        <div>
-          <span class="cat-name">パーマ</span>
-          <span class="cat-name-en">Perm</span>
-        </div>
-      </div>
-
-      <div class="menu-items">
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">パーマ</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥7,700〜</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-          </div>
-          <div class="item-desc">髪に負担の少ない薬剤使用。単品の場合、シャンプー・ブロー別途¥1,100。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
-          </div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">前髪パーマ</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥3,300〜</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-          </div>
-          <div class="item-desc">単品の場合、シャンプー・ブロー別途¥1,100。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- 04 縮毛矯正 -->
-    <section class="menu-cat reveal" id="cat-straight">
-      <div class="cat-header">
-        <span class="cat-num">04</span>
-        <div>
-          <span class="cat-name">縮毛矯正</span>
-          <span class="cat-name-en">Straightening</span>
-        </div>
-      </div>
-
-      <div class="menu-items">
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">ストレートパーマ／縮毛矯正</span>
-            <span class="item-dot"></span>
-            <span class="item-price">¥11,000</span>
-          </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
-          </div>
-          <div class="item-desc">ナチュラルなストレートに仕上げます。シャンプー・ブロー込み。</div>
-          <div class="item-actions">
-            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
-          </div>
-        </div>
-
-        <div class="menu-item">
-          <div class="item-main">
-            <span class="item-name">前髪ストレート／部分ストレート</span>
+            <span class="item-name">リタッチカラー（根元のみ）</span>
             <span class="item-dot"></span>
             <span class="item-price">¥4,400〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag tag-member">顧客様のみ</span>
+          <div class="item-desc">気になる根元を自然に馴染ませます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
           </div>
-          <div class="item-desc">範囲により料金が変動します。単品の場合シャンプー・ブロー別途¥1,100。</div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">ダブルカラー（ケアブリーチ使用）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥12,100〜</span>
+          </div>
+          <div class="item-desc">ハイトーンや透明感カラーに。ダメージを最小限に抑えたケアブリーチを使用します。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">白髪染め（グレイカラー）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥5,500〜</span>
+          </div>
+          <div class="item-desc">自然な仕上がりで白髪をカバー。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 04 パーマ・縮毛矯正 -->
+    <section class="menu-cat reveal" id="cat-perm">
+      <div class="cat-header">
+        <span class="cat-num">04</span>
+        <div>
+          <span class="cat-name">パーマ・縮毛矯正</span>
+          <span class="cat-name-en">Perm & Straight</span>
+        </div>
+      </div>
+
+      <div class="menu-items">
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">デザインパーマ（カット込）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥9,900〜</span>
+          </div>
+          <div class="item-desc">フォルムを整え、扱いやすい髪質へと導きます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">デジタルパーマ</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥13,200〜</span>
+          </div>
+          <div class="item-desc">形状記憶力が高く、乾かすだけでスタイリングが決まります。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">縮毛矯正（フル）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥15,400〜</span>
+          </div>
+          <div class="item-desc">くせ毛・うねりを根本から改善。ナチュラルなストレートに仕上げます。シャンプー・ブロー込み。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
+          </div>
+        </div>
+
+        <div class="menu-item">
+          <div class="item-main">
+            <span class="item-name">ポイント矯正（前髪など）</span>
+            <span class="item-dot"></span>
+            <span class="item-price">¥5,500〜</span>
+          </div>
+          <div class="item-desc">気になる部分だけをピンポイントで整えます。範囲により料金が変動します。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
           </div>
@@ -527,13 +516,13 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
       </div>
     </section>
 
-    <!-- 05 トリートメント -->
+    <!-- 05 トリートメント・ヘッドスパ -->
     <section class="menu-cat reveal" id="cat-treatment">
       <div class="cat-header">
         <span class="cat-num">05</span>
         <div>
-          <span class="cat-name">トリートメント</span>
-          <span class="cat-name-en">Treatment</span>
+          <span class="cat-name">トリートメント・ヘッドスパ</span>
+          <span class="cat-name-en">Treatment & Spa</span>
         </div>
       </div>
 
@@ -541,14 +530,11 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">AMASIAトリートメント・スピードインピタリ</span>
+            <span class="item-name">クイックトリートメント</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥4,400</span>
+            <span class="item-price">¥2,200〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag tag-new">単品/追加両対応</span>
-          </div>
-          <div class="item-desc">追加メニューの場合¥1,100 OFF。超音波アイロン使用。8種の補修成分と11種の質感成分が毛髪内部に高浸透。</div>
+          <div class="item-desc">髪の芯から補修する手軽なケアメニュー。他メニューへの追加も可能。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
             <a href="reservation.html" class="item-link">Webで予約 →</a>
@@ -557,14 +543,11 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">TOKIOインカラミトリートメント（特許取得）</span>
+            <span class="item-name">プレミアム髪質改善トリートメント</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥5,500</span>
+            <span class="item-price">¥5,500〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag tag-new">単品/追加両対応</span>
-          </div>
-          <div class="item-desc">追加メニューの場合¥1,100 OFF。超音波アイロン使用。ブリーチ毛・パサつき・まとまりのなさにお悩みの方に。</div>
+          <div class="item-desc">超音波アイロンを使用し、補修成分を毛髪内部に高浸透。ブリーチ毛・パサつきにお悩みの方に。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
             <a href="reservation.html" class="item-link">Webで予約 →</a>
@@ -573,26 +556,27 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">超音波アイロン</span>
+            <span class="item-name">極上アロマヘッドスパ</span>
             <span class="item-dot"></span>
-            <span class="item-price inquiry">要問い合わせ</span>
+            <span class="item-price">¥3,300〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag">ネット予約対象外</span>
+          <div class="item-desc">頭皮環境を整え、血行を促進するリラクゼーションスパ。日々の疲れを癒やします。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
+            <a href="reservation.html" class="item-link">Webで予約 →</a>
           </div>
-          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
         </div>
 
       </div>
     </section>
 
-    <!-- 06 ヘッドスパ -->
-    <section class="menu-cat reveal" id="cat-spa">
+    <!-- 06 その他 -->
+    <section class="menu-cat reveal" id="cat-other">
       <div class="cat-header">
         <span class="cat-num">06</span>
         <div>
-          <span class="cat-name">ヘッドスパ</span>
-          <span class="cat-name-en">Head Spa</span>
+          <span class="cat-name">その他</span>
+          <span class="cat-name-en">Other</span>
         </div>
       </div>
 
@@ -600,43 +584,37 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">炭酸クレンジングヘッドスパ 5分</span>
+            <span class="item-name">パーティーヘアセット</span>
             <span class="item-dot"></span>
-            <span class="item-price inquiry">要問い合わせ</span>
+            <span class="item-price">¥4,400〜</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag">追加メニューのみ</span>
-            <span class="item-tag">ネット予約対象外</span>
+          <div class="item-desc">特別な日のためのアレンジセット。ご希望のスタイルをお気軽にご相談ください。</div>
+          <div class="item-actions">
+            <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで相談・予約 →</a>
           </div>
-          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
         </div>
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">炭酸クレンジングヘッドスパ 10分</span>
+            <span class="item-name">眉カット</span>
             <span class="item-dot"></span>
-            <span class="item-price inquiry">要問い合わせ</span>
+            <span class="item-price">¥1,100</span>
           </div>
+          <div class="item-desc">ご来店時または備考欄にてお申し付けください。</div>
           <div class="item-tags">
-            <span class="item-tag">追加メニューのみ</span>
             <span class="item-tag">ネット予約対象外</span>
           </div>
-          <div class="item-desc">ご来店時または備考欄にてお伝えください。</div>
         </div>
 
         <div class="menu-item">
           <div class="item-main">
-            <span class="item-name">炭酸クレンジングヘッドスパ 20分＋クイックトリートメント</span>
+            <span class="item-name">シャンプー・ブローのみ</span>
             <span class="item-dot"></span>
-            <span class="item-price">¥4,400</span>
+            <span class="item-price">¥2,750</span>
           </div>
-          <div class="item-tags">
-            <span class="item-tag">追加メニューのみ</span>
-          </div>
-          <div class="item-desc">炭酸ケア後の補修トリートメントで効果◎</div>
+          <div class="item-desc">丁寧なシャンプーとブロースタイリングのみのメニューです。</div>
           <div class="item-actions">
             <a href="https://line.me/R/ti/p/@hxj9946m" class="item-link">LINEで予約 →</a>
-            <a href="reservation.html" class="item-link">Webで予約 →</a>
           </div>
         </div>
 
@@ -649,8 +627,8 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
       <ul class="fn-list">
         <li>※ 価格はすべて税込表示です</li>
         <li>※ ロング料金はいただいておりません</li>
-        <li>※ ご新規様向けのお得なクーポンはホットペッパービューティーにてご確認ください</li>
-        <li>※ 「顧客様のみ」のメニューは2回目以降のお客様限定です</li>
+        <li>※ クーポン・セットメニューは各対象のお客様のみご利用いただけます</li>
+        <li>※ 「新規限定」は初回ご来店のお客様、「再来限定」は2回目以降のお客様が対象です</li>
         <li>※ 「ネット予約対象外」のメニューはLINEまたはご来店時にお申し付けください</li>
         <li>※ 施術内容によって所要時間が異なります。事前にご確認ください</li>
       </ul>
@@ -713,7 +691,7 @@ document.querySelectorAll('#nav-links a').forEach(a => {
 
 // Scroll-spy for desktop sticky nav + mobile horizontal nav
 (function() {
-  const cats = ['cat-cut','cat-color','cat-perm','cat-straight','cat-treatment','cat-spa'];
+  const cats = ['cat-set','cat-cut','cat-color','cat-perm','cat-treatment','cat-other'];
   const desktopLinks = document.querySelectorAll('.cat-nav-item a');
   const mobileLinks  = document.querySelectorAll('.cat-nav-mobile a');
 
