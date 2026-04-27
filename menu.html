@@ -123,8 +123,8 @@ button{cursor:pointer;border:none;background:none;font:inherit;color:inherit}
 .menu-item{padding:1.1rem 0;border-bottom:1px solid rgba(140,110,75,.08)}
 .menu-item:last-child{border-bottom:none}
 .item-main{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.28rem}
-.item-name{font-family:var(--fs);font-size:.88rem;font-weight:400;color:var(--sumi);letter-spacing:.05em;flex-shrink:0}
-.item-dot{flex:1;border-bottom:1px dotted rgba(140,110,75,.22);margin:0 .7rem .3rem}
+.item-name{font-family:var(--fs);font-size:.88rem;font-weight:400;color:var(--sumi);letter-spacing:.05em;flex:1;min-width:0}
+.item-dot{flex:0 0 auto;border-bottom:1px dotted rgba(140,110,75,.22);width:40px;margin:0 .4rem .3rem}
 .item-price{font-family:var(--fh);font-size:1.05rem;color:var(--bark);white-space:nowrap;letter-spacing:.02em;flex-shrink:0}
 .item-price.inquiry{font-family:var(--fr);font-style:italic;font-size:.78rem;color:var(--bark);opacity:.6;letter-spacing:.08em;font-size:.78rem}
 .item-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.4rem}
@@ -181,6 +181,10 @@ footer{position:relative;background:var(--kiji);overflow:hidden;padding:3rem 0 0
   .ph-ghost{font-size:clamp(8rem,22vw,16rem)}
   .cat-header{gap:.8rem}
   .cat-num{font-size:2.4rem}
+  .item-name{font-size:.82rem}
+  .item-dot{display:none}
+  .item-price{font-size:.95rem}
+  .item-price.inquiry{font-size:.74rem}
   .menu-footnotes{padding:1.5rem 1.2rem}
   .menu-cta{padding:4rem 1.5rem}
   .cta-btns{width:100%;max-width:320px;margin:0 auto}
