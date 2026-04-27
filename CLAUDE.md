@@ -73,15 +73,96 @@ web-site-mock/
 9. 管理画面（/admin）
 
 ## メニュー構成
+
 | カテゴリ | 主なメニュー |
 |---|---|
-| カット | デザインカット ¥4,400 / 学生 ¥4,000 / キッズ ¥3,500 |
-| カラー | フル ¥6,600 / リタッチ ¥4,800 / ブリーチ ¥7,700 / Wカラー ¥13,500〜 |
-| パーマ | パーマ ¥7,700〜 / 前髪パーマ ¥3,300〜 |
-| 縮毛矯正 | ¥11,000 / 部分 ¥4,400〜 |
-| トリートメント | AMASIA ¥4,400 / TOKIOインカラミ ¥5,500 |
-| ヘッドスパ | 炭酸スパ20分＋TR ¥4,400 |
-| Popular No.1 | カット＋カラー＋超音波TR ¥9,900 |
+| クーポン・セット | 新規限定／全員対象／再来限定のセットプラン |
+| カット | デザインカット ¥4,400〜 / メンズ ¥4,000〜 / キッズ ¥2,500〜 |
+| カラー | フル ¥6,600〜 / リタッチ ¥4,400〜 / ダブル ¥12,100〜 / 白髪染め ¥5,500〜 |
+| パーマ・縮毛矯正 | デザインパーマ ¥9,900〜 / デジタル ¥13,200〜 / 縮毛矯正 ¥15,400〜 / ポイント ¥5,500〜 |
+| トリートメント・ヘッドスパ | クイックTR ¥2,200〜 / プレミアムTR ¥5,500〜 / アロマスパ ¥3,300〜 |
+| その他 | ヘアセット ¥4,400〜 / 眉カット ¥1,100 / シャンプー・ブロー ¥2,750 |
+
+## メニューデータ構造（DB設計用）
+
+### クーポン／セットメニューの概念
+
+ホットペッパーのクーポンUIを参考に、以下の3種バッジで対象者を区別する。
+
+| バッジ | 対象 | 色（CSS変数） |
+|---|---|---|
+| 新規限定 | 初回来店のお客様のみ | `--moss`（グリーン） |
+| 全員対象 | すべてのお客様 | `--terra`（テラコッタ） |
+| 再来限定 | 2回目以降のお客様のみ | `--bark`（ブラウン） |
+
+### テーブル設計
+
+#### `menu_categories`（カテゴリマスタ）
+```sql
+id          serial primary key
+slug        text unique not null   -- 'cut', 'color', 'perm', 'treatment', 'other', 'set'
+name_ja     text not null          -- 'カット'
+name_en     text                   -- 'Cut'
+sort_order  int not null default 0
+is_visible  boolean not null default true
+```
+
+#### `menus`（メニューマスタ）
+```sql
+id            serial primary key
+category_id   int references menu_categories(id)
+name          text not null
+description   text
+price_new     int                  -- 新規向け価格（円、nullの場合は price_return と同額）
+price_return  int                  -- 再来向け価格（円）
+price_label   text                 -- '¥4,400〜' など表示用文字列（price が変動する場合）
+target        text check (target in ('新規', '全員', '再来'))  -- クーポン対象区分
+is_coupon     boolean not null default false   -- クーポン・セットカードとして表示するか
+is_inquiry    boolean not null default false   -- 「要問い合わせ」表示か
+is_web_reservable boolean not null default true
+sort_order    int not null default 0
+is_visible    boolean not null default true
+created_at    timestamptz default now()
+updated_at    timestamptz default now()
+```
+
+#### `coupon_items`（クーポンに含まれる施術の内訳、任意）
+```sql
+id         serial primary key
+coupon_id  int references menus(id)
+menu_id    int references menus(id)   -- 構成メニュー（nullの場合はテキスト管理）
+name       text                        -- 構成メニュー名（テキスト）
+sort_order int not null default 0
+```
+
+### データ例
+
+```
+-- カテゴリ
+('set',       'クーポン・セット', 'Coupon & Set',     1)
+('cut',       'カット',           'Cut',               2)
+('color',     'カラー',           'Color',             3)
+('perm',      'パーマ・縮毛矯正', 'Perm & Straight',  4)
+('treatment', 'TR・ヘッドスパ',   'Treatment & Spa',  5)
+('other',     'その他',           'Other',             6)
+
+-- メニュー（抜粋）
+(cat=set,       'デザインカット＋フルカラー＋髪質改善TR', target='新規', is_coupon=true, price_new=14300, price_label='¥14,300')
+(cat=set,       'カット＋スキャルプヘッドスパ',          target='全員', is_coupon=true, price_return=6600, price_label='¥6,600')
+(cat=set,       'メンテナンスカット＋カラーリタッチ',    target='再来', is_coupon=true, price_return=7700, price_label='¥7,700')
+(cat=cut,       'デザインカット',    target='全員', price_return=4400, price_label='¥4,400〜')
+(cat=cut,       'メンズカット',      target='全員', price_return=4000, price_label='¥4,000〜')
+(cat=cut,       'キッズ・ジュニア',  target='全員', price_return=2500, price_label='¥2,500〜')
+(cat=color,     'フルカラー',        target='全員', price_return=6600, price_label='¥6,600〜')
+(cat=color,     'リタッチカラー',    target='全員', price_return=4400, price_label='¥4,400〜')
+(cat=color,     'ダブルカラー',      target='全員', price_return=12100, price_label='¥12,100〜')
+(cat=color,     '白髪染め',          target='全員', price_return=5500, price_label='¥5,500〜')
+(cat=treatment, 'クイックTR',        target='全員', price_return=2200, price_label='¥2,200〜')
+(cat=treatment, 'プレミアム髪質改善TR', target='全員', price_return=5500, price_label='¥5,500〜')
+(cat=treatment, '極上アロマヘッドスパ', target='全員', price_return=3300, price_label='¥3,300〜')
+(cat=other,     '眉カット',          target='全員', price_return=1100, is_web_reservable=false)
+(cat=other,     'シャンプー・ブロー', target='全員', price_return=2750, price_label='¥2,750')
+```
 
 ## 予約システム仕様（モック）
 - 5ステップフォーム（日程 → 時間 → メニュー → 情報入力 → 確認 → 完了）
