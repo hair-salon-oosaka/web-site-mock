@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>noble. — マンツーマンの完全プライベート美容室 | 大阪市城東区野江</title>
+  <link rel="icon" href="logo.png" type="image/png">
+  <link rel="apple-touch-icon" href="logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Klee+One&family=Noto+Serif+JP:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -66,10 +68,17 @@
     .hero-head.stuck .nav-ham span{background:var(--sumi)}
 
     .logo{
+      display:flex;align-items:center;gap:10px;
       font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:400;
       font-size:30px;line-height:1;letter-spacing:.14em;color:#fff;
       transition:color .3s,font-size .3s;
     }
+    .logo-img{
+      width:auto;height:36px;object-fit:contain;
+      filter:brightness(0) invert(1);
+      transition:filter .3s;
+    }
+    .hero-head.stuck .logo-img{filter:brightness(0)}
     .logo-sub{
       display:block;font-style:normal;
       font-family:'Noto Serif JP',serif;font-size:9px;letter-spacing:.12em;
@@ -399,7 +408,10 @@
     </div>
 
     <header class="hero-head" id="hero-head">
-      <a href="#top" class="logo">noble.<span class="logo-sub">Private Hair Salon</span></a>
+      <a href="#top" class="logo">
+        <img src="logo.png" alt="noble." class="logo-img">
+        <span class="logo-sub">Private Hair Salon</span>
+      </a>
       <nav class="nav serif-en">
         <a href="#concept">Concept</a>
         <a href="#menu">Menu</a>
